@@ -3,10 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Your design system is now an API for agents — happening</title>
+<title>A2UI 1.0: Your Design System Is Now an API for Agents | Happening</title>
+<meta name="description" content="A2UI 1.0 lets AI agents answer with real UI built only from your components. What Google&#x27;s generative UI protocol means for design systems and UI teams.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="author" content="Swastik Bose">
+<meta name="keywords" content="A2UI, A2UI 1.0, generative UI, agentic UI, design systems, AI agents, Google A2UI, MCP Apps, AG-UI">
+<link rel="canonical" href="https://www.happening.design/blog/a2ui-design-system-api-for-agents/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="happening">
+<meta property="og:title" content="A2UI 1.0: Your design system is now an API for agents">
+<meta property="og:description" content="A2UI 1.0 lets AI agents answer with real UI built only from your components. What Google&#x27;s generative UI protocol means for design systems and UI teams.">
+<meta property="og:url" content="https://www.happening.design/blog/a2ui-design-system-api-for-agents/">
+<meta property="og:image" content="https://www.happening.design/blog/a2ui-design-system-api-for-agents/cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Happening Journal cover: an A2UI JSON message next to the booking card it renders">
+<meta property="article:published_time" content="2026-11-25T09:00:00+05:30">
+<meta property="article:author" content="Swastik Bose">
+<meta property="article:section" content="Journal">
+<meta property="article:tag" content="A2UI"><meta property="article:tag" content="Generative UI"><meta property="article:tag" content="Design Systems">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A2UI 1.0: Your design system is now an API for agents">
+<meta name="twitter:description" content="A2UI 1.0 lets AI agents answer with real UI built only from your components. What Google&#x27;s generative UI protocol means for design systems and UI teams.">
+<meta name="twitter:image" content="https://www.happening.design/blog/a2ui-design-system-api-for-agents/cover.jpg">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BlogPosting", "@id": "https://www.happening.design/blog/a2ui-design-system-api-for-agents/#article", "headline": "A2UI 1.0: Your design system is now an API for agents", "description": "A2UI 1.0 lets AI agents answer with real UI built only from your components. What Google's generative UI protocol means for design systems and UI teams.", "image": ["https://www.happening.design/blog/a2ui-design-system-api-for-agents/cover.jpg"], "datePublished": "2026-11-25T09:00:00+05:30", "dateModified": "2026-11-25T09:00:00+05:30", "author": {"@type": "Person", "name": "Swastik Bose", "jobTitle": "Senior UX/Product Designer", "worksFor": {"@id": "https://www.happening.design/#org"}}, "publisher": {"@id": "https://www.happening.design/#org"}, "mainEntityOfPage": "https://www.happening.design/blog/a2ui-design-system-api-for-agents/", "inLanguage": "en", "articleSection": "Journal", "keywords": ["A2UI", "A2UI 1.0", "generative UI", "agentic UI", "design systems", "AI agents"], "about": [{"@type": "Thing", "name": "A2UI"}, {"@type": "Thing", "name": "Generative user interface"}, {"@type": "Thing", "name": "Design system"}], "wordCount": 1900, "timeRequired": "PT8M", "citation": ["https://developers.googleblog.com/a2ui-10-build-delightful-fast-reliable-agentic-experiences/", "https://a2ui.org/specification/v1.0-a2ui/"]}, {"@type": "Organization", "@id": "https://www.happening.design/#org", "name": "happening", "url": "https://www.happening.design/", "logo": {"@type": "ImageObject", "url": "https://www.happening.design/images/global/hero-wordmark.svg"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.happening.design/"}, {"@type": "ListItem", "position": 2, "name": "Journal", "item": "https://www.happening.design/blog/"}, {"@type": "ListItem", "position": 3, "name": "A2UI 1.0: Your design system is now an API for agents", "item": "https://www.happening.design/blog/a2ui-design-system-api-for-agents/"}]}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Space+Mono&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Space+Mono&display=swap" rel="stylesheet">
 <style>
 /* VOICE: a Happening journal essay — design-first take on a developer protocol, plain and honest about limits.
    IDEA: a live protocol inspector: JSON on one side, the native UI it becomes on the other.
@@ -99,6 +122,27 @@ h1{font-size:clamp(38px,5.6vw,68px);line-height:1.04;letter-spacing:-.035em;font
 .code pre .jk{color:#7cc4ff}.code pre .js{color:#c3e88d}
 .code pre.tall{max-height:560px;overflow:auto}
 .valid{display:inline-flex;align-items:center;gap:6px;background:var(--sage);color:#2f5a14;border-radius:999px;padding:4px 10px;font:500 12.5px var(--sans)}
+/* happening's take */
+.take{margin:34px 0 0;max-width:880px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:26px 30px 24px;box-shadow:var(--sh)}
+.take .mono{display:inline-flex;align-items:center;gap:8px;color:var(--blue)}
+.take .mono::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--blue)}
+.take p{margin:12px 0 18px;font-size:19px;line-height:1.6;color:var(--ink)}
+.takeaways{display:flex;flex-wrap:wrap;gap:8px}
+.takeaways span{background:var(--cream);border-radius:999px;padding:7px 14px;font-size:14px;color:var(--body)}
+.takeaways b{color:var(--ink);font-weight:600}
+/* use cases */
+.uses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.use{padding:20px 20px 18px;display:flex;flex-direction:column}
+.use .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#eef5fe;margin-bottom:12px}
+.use .ic svg{width:22px;height:22px}
+.use h3.ct,.lesson h3.ct{margin:0 0 6px;font-size:18px;line-height:1.3;letter-spacing:-.015em;font-weight:600}
+.use p{margin:0;font-size:14.5px;line-height:1.5;color:var(--body);flex:1}
+.use .seen{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;color:var(--body)}
+.use .seen b{display:block;font:400 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:2px}
+.lessons.four{grid-template-columns:repeat(2,minmax(0,1fr))}
+.related{display:grid;gap:10px;margin:56px 0 8px}
+.rel{display:block;padding:16px 20px;text-decoration:none!important;color:var(--ink)!important}
+.rel b{display:block;font-size:17px;letter-spacing:-.01em;font-weight:600}.rel span{display:block;font-size:14.5px;color:var(--body);margin-top:2px}
 /* floating section pill */
 .toc{position:sticky;top:14px;z-index:20;display:flex;justify-content:center;margin:56px auto 0;padding:0 16px;pointer-events:none}
 .toc .scroll{pointer-events:auto;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding:6px;border-radius:999px;background:rgba(255,255,255,.8);-webkit-backdrop-filter:blur(16px) saturate(1.5);backdrop-filter:blur(16px) saturate(1.5);border:1px solid var(--line);box-shadow:var(--sh)}
@@ -229,7 +273,7 @@ footer{background:var(--cream);border-top:1px solid rgba(229,211,179,.8);padding
 .fgrid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:28px;font-size:14.5px;color:var(--body)}
 .fgrid h5{margin:0 0 10px;font:400 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
 .fgrid p{margin:0 0 6px}
-@media(max-width:900px){.inspector,.vs,.brands{grid-template-columns:minmax(0,1fr)}.spec,.adopt,.lessons{grid-template-columns:minmax(0,1fr)}.fgrid{grid-template-columns:minmax(0,1fr)}.links{display:none}.stream{height:auto}.surface{min-height:340px}.msgs{max-height:340px}.ctrlrow .mono{margin-left:0}}
+@media(max-width:900px){.uses,.lessons.four{grid-template-columns:minmax(0,1fr)}.inspector,.vs,.brands{grid-template-columns:minmax(0,1fr)}.spec,.adopt,.lessons{grid-template-columns:minmax(0,1fr)}.fgrid{grid-template-columns:minmax(0,1fr)}.links{display:none}.stream{height:auto}.surface{min-height:340px}.msgs{max-height:340px}.ctrlrow .mono{margin-left:0}}
 @media(max-width:600px){body{font-size:17px}.swipe{display:block}.seg button{padding:0 12px;font-size:13.5px}.panel{grid-template-columns:minmax(0,1fr)}.panel .ic{display:none}.adopt{grid-template-columns:minmax(0,1fr)}.chat,.cardside{min-height:0}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 </style>
@@ -247,9 +291,15 @@ footer{background:var(--cream);border-top:1px solid rgba(229,211,179,.8);padding
 <div class="wrap" id="top">
   <a class="back mono" href="#top">← Journal</a>
   <ul class="tags"><li>AI in Design</li><li>Design Systems</li><li>Generative UI</li></ul>
-  <h1>Your design system is now an API for agents.</h1>
-  <div class="meta mono"><span>Nov 25, 2026</span><span>11 min read</span><span>Swastik Bose</span></div>
-  <p class="lead">Google's A2UI 1.0 lets AI agents answer with real interfaces instead of paragraphs. The catch is the interesting part: an agent can only build with the components you register. Here is what that means for anyone who designs products.</p>
+  <h1>A2UI: your design system is now an API for agents.</h1>
+  <div class="meta mono"><time datetime="2026-11-25">Nov 25, 2026</time><span>8 min read</span><span rel="author">Swastik Bose</span></div>
+  <p class="lead">Google's A2UI 1.0, an open protocol for generative UI, lets AI agents answer with real interfaces instead of paragraphs. The catch is the interesting part: an agent can only build with the components you register. Here is what that means for anyone who designs products.</p>
+
+  <section class="take" aria-label="Happening's take">
+    <span class="mono">Happening's take</span>
+    <p>A2UI matters to UI teams less as a protocol and more as a contract. Agents stop replying in paragraphs and start assembling screens, but only from components you have registered and styled, and the app draws them natively on web, iOS, Android and inside assistants like Claude and Gemini. That turns your design system into the interface an AI speaks through: the clearer your components, their descriptions and their states, the better every agent-made screen looks and behaves. Today it earns its place in decision moments, such as approvals, bookings and follow-up questions, not as a replacement for core screens. If you own a design system, start treating it like an API.</p>
+    <div class="takeaways"><span><b>Best for</b> · decision moments</span><span><b>Your job</b> · the component catalog</span><span><b>Not for</b> · core, daily workflows</span><span><b>Works on</b> · web, Flutter, SwiftUI, assistants</span></div>
+  </section>
 
   <div class="herocard">
     <div class="herohead">
@@ -271,17 +321,17 @@ footer{background:var(--cream);border-top:1px solid rgba(229,211,179,.8);padding
 </div>
 
 <nav class="toc" aria-label="Sections"><div class="scroll">
-  <a href="#shift">The shift</a><a href="#turns">Text vs UI</a><a href="#how">How it works</a><a href="#brands">Your brand</a><a href="#spectrum">Where it fits</a><a href="#who">Who's using it</a><a href="#designers">For designers</a><a href="#caveats">Caveats</a><a href="#sources">Sources</a>
+  <a href="#shift">The shift</a><a href="#turns">Text vs UI</a><a href="#how">How it works</a><a href="#brands">Your brand</a><a href="#ui-work">Use cases</a><a href="#workflow">Your workflow</a><a href="#caveats">Caveats</a><a href="#sources">Sources</a>
 </div></nav>
 
 <article>
 <div class="wrap">
 <div class="col" id="shift">
-  <h2>Agents are learning to answer with interfaces</h2>
+  <h2>What is A2UI? Agents that answer with interfaces</h2>
   <p>On November 11, 2026, Google released <a href="https://developers.googleblog.com/a2ui-10-build-delightful-fast-reliable-agentic-experiences/">A2UI 1.0</a>, the first stable version of its open protocol for generative UI. The idea is simple: instead of replying with text, an agent describes what to show, like a form to confirm or a chart, and the app draws it with its own native components.</p>
   <p>Most coverage treats this as a developer story. It's a design story first. A2UI's central rule is that the agent can only place and configure components the developer has registered. Nothing else gets on screen. That makes the component library the boundary of what an AI can say visually.</p>
   <p class="pull">For a decade, design systems kept humans consistent. Now they decide what machines are allowed to show.</p>
-  <p>That's a big promotion for something many teams still treat as a Figma library and a Storybook. Let's look at how the protocol works, who's already using it, and what changes in how we design.</p>
+  <p>Below: the concept in four interactive pieces, then what it's actually useful for in day-to-day UI work.</p>
 </div>
 
 <div class="col" id="turns">
@@ -315,7 +365,7 @@ footer{background:var(--cream);border-top:1px solid rgba(229,211,179,.8);padding
 </figure>
 
 <div class="col" id="how">
-  <h2>How it works: a blueprint, not a webpage</h2>
+  <h2>How A2UI works: a blueprint, not a webpage</h2>
   <p>A2UI is a stream of small JSON messages. In the v1.0 spec, the agent creates a <strong>surface</strong>, sends <strong>components</strong> as a flat list where each one has an id and parents point to children by id, then fills a <strong>data model</strong> that components bind to with JSON Pointer paths (<a href="https://a2ui.org/specification/v1.0-a2ui/">A2UI spec</a>). Because the list is flat and ID-based, the app can start drawing before the whole tree exists. That's exactly what the card at the top does: it's drawn from real v1.0 messages, so the grey placeholders are bindings still waiting for data.</p>
   <p>The return path matters just as much. Inputs write to a local data model straight away, but nothing goes back to the agent until a user action fires. Version 1.0 also adds bidirectional function calls, so a picker can check availability in place (<a href="https://developers.googleblog.com/a2ui-10-build-delightful-fast-reliable-agentic-experiences/">Google</a>). Tap a block below to see what each part does.</p>
 </div>
@@ -355,7 +405,184 @@ footer{background:var(--cream);border-top:1px solid rgba(229,211,179,.8);padding
   <p>Here is the exact stream behind the booking card at the top of this page. Note what's missing: no colours, no fonts, no spacing. In 1.0 the spec removed built-in theme properties entirely and left styling to each platform's native theme (<a href="https://a2ui.org/specification/v1.0-a2ui/">A2UI spec</a>).</p>
   <div class="code">
     <div class="bar"><span>booking.a2ui.jsonl · A2UI v1.0</span><button id="copyBtn">Copy JSONL</button></div>
-<pre class="tall" id="codeBlock"></pre>
+<pre class="tall" id="codeBlock">// 1 · agent → app
+{
+  &quot;version&quot;: &quot;1.0&quot;,
+  &quot;createSurface&quot;: {
+    &quot;surfaceId&quot;: &quot;booking&quot;,
+    &quot;catalogId&quot;: &quot;https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json&quot;
+  }
+}
+
+// 2 · agent → app
+{
+  &quot;version&quot;: &quot;1.0&quot;,
+  &quot;updateComponents&quot;: {
+    &quot;surfaceId&quot;: &quot;booking&quot;,
+    &quot;components&quot;: [
+      {
+        &quot;id&quot;: &quot;root&quot;,
+        &quot;component&quot;: &quot;Card&quot;,
+        &quot;child&quot;: &quot;body&quot;
+      },
+      {
+        &quot;id&quot;: &quot;body&quot;,
+        &quot;component&quot;: &quot;Column&quot;,
+        &quot;children&quot;: [
+          &quot;title&quot;,
+          &quot;summary&quot;,
+          &quot;time_picker&quot;,
+          &quot;full_note&quot;,
+          &quot;book_button&quot;
+        ],
+        &quot;align&quot;: &quot;stretch&quot;
+      },
+      {
+        &quot;id&quot;: &quot;title&quot;,
+        &quot;component&quot;: &quot;Text&quot;,
+        &quot;text&quot;: {
+          &quot;@call&quot;: &quot;formatString&quot;,
+          &quot;args&quot;: {
+            &quot;value&quot;: &quot;## ${/place/name}&quot;
+          }
+        }
+      },
+      {
+        &quot;id&quot;: &quot;summary&quot;,
+        &quot;component&quot;: &quot;Text&quot;,
+        &quot;text&quot;: {
+          &quot;@path&quot;: &quot;/booking/summary&quot;
+        },
+        &quot;variant&quot;: &quot;caption&quot;
+      },
+      {
+        &quot;id&quot;: &quot;time_picker&quot;,
+        &quot;component&quot;: &quot;ChoicePicker&quot;,
+        &quot;label&quot;: &quot;Time&quot;,
+        &quot;variant&quot;: &quot;mutuallyExclusive&quot;,
+        &quot;displayStyle&quot;: &quot;chips&quot;,
+        &quot;options&quot;: [
+          {
+            &quot;label&quot;: &quot;19:30&quot;,
+            &quot;value&quot;: &quot;19:30&quot;
+          },
+          {
+            &quot;label&quot;: &quot;20:15&quot;,
+            &quot;value&quot;: &quot;20:15&quot;
+          },
+          {
+            &quot;label&quot;: &quot;21:00&quot;,
+            &quot;value&quot;: &quot;21:00&quot;
+          }
+        ],
+        &quot;value&quot;: {
+          &quot;@path&quot;: &quot;/booking/time&quot;
+        },
+        &quot;@accessibility&quot;: {
+          &quot;label&quot;: &quot;Choose a time for your table&quot;
+        }
+      },
+      {
+        &quot;id&quot;: &quot;full_note&quot;,
+        &quot;component&quot;: &quot;Text&quot;,
+        &quot;text&quot;: &quot;19:00 is fully booked.&quot;,
+        &quot;variant&quot;: &quot;caption&quot;
+      },
+      {
+        &quot;id&quot;: &quot;book_label&quot;,
+        &quot;component&quot;: &quot;Text&quot;,
+        &quot;text&quot;: &quot;Book table&quot;
+      },
+      {
+        &quot;id&quot;: &quot;book_button&quot;,
+        &quot;component&quot;: &quot;Button&quot;,
+        &quot;child&quot;: &quot;book_label&quot;,
+        &quot;variant&quot;: &quot;primary&quot;,
+        &quot;action&quot;: {
+          &quot;event&quot;: {
+            &quot;name&quot;: &quot;bookTable&quot;,
+            &quot;userMessage&quot;: &quot;Booked a table&quot;,
+            &quot;context&quot;: {
+              &quot;restaurant&quot;: {
+                &quot;@path&quot;: &quot;/place/name&quot;
+              },
+              &quot;time&quot;: {
+                &quot;@path&quot;: &quot;/booking/time&quot;
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+
+// 3 · agent → app
+{
+  &quot;version&quot;: &quot;1.0&quot;,
+  &quot;updateDataModel&quot;: {
+    &quot;surfaceId&quot;: &quot;booking&quot;,
+    &quot;value&quot;: {
+      &quot;place&quot;: {
+        &quot;name&quot;: &quot;Osteria Nove&quot;
+      },
+      &quot;booking&quot;: {
+        &quot;summary&quot;: &quot;Table for 2 · Fri, Nov 28&quot;,
+        &quot;time&quot;: [
+          &quot;19:30&quot;
+        ]
+      }
+    }
+  }
+}
+
+// 4 · app → agent (user tapped Book)
+{
+  &quot;version&quot;: &quot;1.0&quot;,
+  &quot;action&quot;: {
+    &quot;name&quot;: &quot;bookTable&quot;,
+    &quot;surfaceId&quot;: &quot;booking&quot;,
+    &quot;sourceComponentId&quot;: &quot;book_button&quot;,
+    &quot;timestamp&quot;: &quot;2026-11-25T12:00:00Z&quot;,
+    &quot;userMessage&quot;: &quot;Booked a table&quot;,
+    &quot;context&quot;: {
+      &quot;restaurant&quot;: &quot;Osteria Nove&quot;,
+      &quot;time&quot;: [
+        &quot;19:30&quot;
+      ]
+    }
+  }
+}
+
+// 5 · agent → app
+{
+  &quot;version&quot;: &quot;1.0&quot;,
+  &quot;updateComponents&quot;: {
+    &quot;surfaceId&quot;: &quot;booking&quot;,
+    &quot;components&quot;: [
+      {
+        &quot;id&quot;: &quot;body&quot;,
+        &quot;component&quot;: &quot;Column&quot;,
+        &quot;children&quot;: [
+          &quot;title&quot;,
+          &quot;summary&quot;,
+          &quot;confirmed&quot;
+        ],
+        &quot;align&quot;: &quot;stretch&quot;
+      },
+      {
+        &quot;id&quot;: &quot;confirmed&quot;,
+        &quot;component&quot;: &quot;Text&quot;,
+        &quot;text&quot;: {
+          &quot;@call&quot;: &quot;formatString&quot;,
+          &quot;args&quot;: {
+            &quot;value&quot;: &quot;Booked for ${/booking/time/0}. Confirmation sent.&quot;
+          }
+        }
+      }
+    ]
+  }
+}</pre>
   </div>
   <p class="note"><span class="valid">✓ Valid</span> All five messages pass the official v1.0 JSON schemas and Basic Catalog from <a href="https://github.com/a2ui-project/a2ui">a2ui-project/a2ui</a>. The cards on this page are drawn from them by a small renderer written for this post in Happening's style, not Google's official renderer.</p>
 </div>
@@ -369,7 +596,14 @@ footer{background:var(--cream);border-top:1px solid rgba(229,211,179,.8);padding
     <div class="seg" role="group" aria-label="Host app" id="brandSeg"><span class="thumb"></span><button aria-pressed="true" data-t="hap">Happening</button><button aria-pressed="false" data-t="led">Ledger bank</button><button aria-pressed="false" data-t="pip">Pip app</button></div>
     <div class="brands">
       <div class="code"><div class="bar"><span>Same A2UI payload · component tree</span><span>unchanged</span></div>
-<pre id="brandTree"></pre></div>
+<pre id="brandTree">Card         
+└─ Column       
+   ├─ Text         formatString(&quot;## ${/place/name}&quot;)
+   ├─ Text         @/booking/summary ·caption
+   ├─ ChoicePicker @/booking/time · 19:30 20:15 21:00
+   ├─ Text         &quot;19:00 is fully booked.&quot; ·caption
+   └─ Button       action: bookTable
+      └─ Text         &quot;Book table&quot;</pre></div>
       <div class="stage t-hap" id="stage"><div id="brandMount" style="width:100%;display:grid;place-items:center"></div></div>
     </div>
     <div class="bnote card" aria-live="polite" id="bnote"></div>
@@ -380,78 +614,40 @@ footer{background:var(--cream);border-top:1px solid rgba(229,211,179,.8);padding
   <p>Compare that with the older approach of shipping HTML in an iframe. Google's team calls it heavy, visually disjointed from the host and hard to secure (<a href="https://developers.googleblog.com/en/introducing-a2ui-an-open-project-for-agent-driven-interfaces/">Google</a>). With A2UI the host keeps control of the look, and accessibility comes from the host's native components plus an <code>@accessibility</code> object the agent can fill with labels and descriptions (<a href="https://a2ui.org/specification/v1.0-a2ui/">spec</a>).</p>
 </div>
 
-<div class="col" id="spectrum">
-  <h2>Where it fits: control versus freedom</h2>
-  <p>A2UI isn't the only way to let agents touch UI, and it isn't meant to replace the others. CopilotKit, which co-builds much of this ecosystem, sorts generative UI into three patterns by how much the agent controls (<a href="https://github.com/CopilotKit/generative-ui">CopilotKit</a>). Google Cloud frames the same trade-off as brand safety and security against visual flexibility (<a href="https://cloud.google.com/discover/generative-ui">Google Cloud</a>).</p>
-</div>
-<figure class="wide">
-  <div class="print">
-    <div class="axis" aria-hidden="true"></div>
-    <div class="axisl mono"><span>Your team controls the UI</span><span>The agent controls the UI</span></div>
-    <div class="spec">
-      <div class="card lift"><span class="mono">Controlled</span><h4>Pre-built screens</h4><p>You hand-build components; the agent only decides when to show them and fills in data.</p>
-        <div class="mrow">Control<div class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></div></div>
-        <div class="mrow">Freedom<div class="meter fr"><i class="f"></i><i></i><i></i><i></i><i></i></div></div>
-        <span class="proto">AG-UI tool calls</span></div>
-      <div class="card lift mid"><span class="mono" style="color:var(--blue)">Declarative</span><h4>Composed from your parts</h4><p>The agent arranges components from your catalog into new layouts, but can't invent new ones.</p>
-        <div class="mrow">Control<div class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></div></div>
-        <div class="mrow">Freedom<div class="meter fr"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></div></div>
-        <span class="proto">A2UI · Open-JSON-UI</span></div>
-      <div class="card lift"><span class="mono">Open-ended</span><h4>The tool brings its own UI</h4><p>A server ships a full web app, rendered in a sandboxed iframe with its own look.</p>
-        <div class="mrow">Control<div class="meter"><i class="f"></i><i></i><i></i><i></i><i></i></div></div>
-        <div class="mrow">Freedom<div class="meter fr"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></div></div>
-        <span class="proto">MCP Apps</span></div>
-    </div>
-  </div>
-  <figcaption class="mono"><code>Spectrum</code><span>Patterns per CopilotKit · meter levels are our relative reading</span></figcaption>
-</figure>
-<div class="col">
-  <p>They also combine. A2UI's web and Flutter renderers work inside MCP Apps, which is how A2UI screens can appear in assistants like Claude and Gemini (<a href="https://developers.googleblog.com/en/a2ui-1-0-generative-ui">Google</a>). In practice, a team might hand-build its core workflows, let agents compose the long tail with A2UI, and embed a partner's MCP App where it owns the whole experience.</p>
-</div>
 
-<div class="col" id="who">
-  <h2>Who's already using it</h2>
-  <p>A2UI has moved past demos. These are the uses named in Google's 1.0 announcement and A2UI's own docs.</p>
+<div class="col" id="ui-work">
+  <h2>What A2UI is actually useful for in UI work</h2>
+  <p>Strip away the protocol and A2UI does one thing well: it puts the right small interface in front of someone at the moment they need to decide. These are the six jobs where that pays off, each with a real team already doing it.</p>
 </div>
 <figure class="wide">
-  <div class="adopt">
-    <div class="ad card lift"><div class="who"><h4>Atlassian</h4><span class="plat">Jira</span></div><p>Agents assigning work items ask follow-up questions through interactive cards instead of chat.</p></div>
-    <div class="ad card lift"><div class="who"><h4>Alation</h4><span class="plat">Claude · own app</span></div><p>AIOS feeds of metric cards and charts render both in Claude and in Alation's Data Products App.</p></div>
-    <div class="ad card lift"><div class="who"><h4>Gemini Notebook</h4><span class="plat">Google</span></div><p>Option and review cards ask what kind of slide deck you want before generating it.</p></div>
-    <div class="ad card lift"><div class="who"><h4>Gemini Enterprise</h4><span class="plat">Google</span></div><p>Enterprise agents render custom UI such as forms and approval dashboards inside host apps.</p></div>
-    <div class="ad card lift"><div class="who"><h4>ByteDance Lynx</h4><span class="plat">Renderer</span></div><p>Released an A2UI renderer for its Lynx framework in June 2026, moving from 0.9 to 1.0.</p></div>
-    <div class="ad card lift"><div class="who"><h4>Flutter GenUI</h4><span class="plat">Mobile · web · desktop</span></div><p>Flutter's GenUI SDK uses A2UI under the hood to let agents compose from a widget catalog.</p></div>
-  </div>
-  <div class="verts" aria-label="Partner demos by industry">
-    <span><b>Real estate</b> · Homeward</span><span><b>Investing</b> · Somnio Software</span><span><b>Healthcare</b> · GenUI Clinic</span><span><b>Home</b> · Riviera Home</span><span><b>Wellness</b> · Vital Loop</span><span><b>Also building</b> · Bloomberg, Opal</span>
-  </div>
-  <figcaption class="mono"><code>Adopters</code><span>Sources: Google's A2UI 1.0 post, a2ui.org</span></figcaption>
+  <div class="uses"><div class="use card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></div><h3 class="ct">Decision cards</h3><p>Approve, assign or confirm in one tap instead of a text thread. The highest-value use today.</p><div class="seen"><b>Seen in</b>Atlassian: Jira agents ask follow-ups through interactive cards. Gemini Enterprise: approval dashboards.</div></div><div class="use card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div><h3 class="ct">Forms that build themselves</h3><p>The agent asks only for what it doesn’t know yet, and 1.0’s function calls let a picker check availability in place.</p><div class="seen"><b>Seen in</b>Booking and reservation flows, as in Google’s 1.0 announcement and the demo above.</div></div><div class="use card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 2 4-6"/></svg></div><h3 class="ct">Data at a glance</h3><p>Metric cards and charts instead of numbers buried in prose, rendered with your own chart components.</p><div class="seen"><b>Seen in</b>Alation: AIOS metric cards and charts, shown both in Claude and in its own app.</div></div><div class="use card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.3 2.4c-.5.2-.8.6-.8 1.1V14M12 17v.5"/></svg></div><h3 class="ct">Clarify before generating</h3><p>Option cards that pin down intent before a long or costly task, so the agent doesn’t guess.</p><div class="seen"><b>Seen in</b>Gemini Notebook: asks what kind of slide deck you want before making it.</div></div><div class="use card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="12" height="10" rx="2"/><rect x="16" y="4" width="6" height="14" rx="2"/><path d="M6 20h4"/></svg></div><h3 class="ct">One design, every surface</h3><p>Design a component once; the same agent message renders natively on web, mobile, desktop and inside AI assistants.</p><div class="seen"><b>Seen in</b>Flutter GenUI SDK and ByteDance’s Lynx renderer; MCP Apps for Claude and Gemini.</div></div><div class="use card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.4 5 5.6.8-4 3.9.9 5.5L12 15.6 7.1 18.2l.9-5.5-4-3.9 5.6-.8z"/></svg></div><h3 class="ct">Faster prototyping</h3><p>Let an agent compose new layouts from your real library to test flows before anyone hand-builds them.</p><div class="seen"><b>Seen in</b>Google’s Opal: generative UI for AI mini-apps, built on A2UI.</div></div></div>
+  <figcaption class="mono"><code>UseCases</code><span>Examples from Google's A2UI 1.0 post, its launch post and a2ui.org</span></figcaption>
 </figure>
 <div class="col">
-  <p>The pattern across all of them is the same: <strong>moments of decision</strong>. Assigning, approving, choosing, confirming, reviewing a chart. That's where a wall of text fails people and a well-designed card shines. Atlassian's Jira cards and Alation's feeds are listed in the <a href="https://developers.googleblog.com/a2ui-10-build-delightful-fast-reliable-agentic-experiences/">1.0 announcement</a>; Gemini Enterprise and Opal are described in Google's <a href="https://developers.googleblog.com/en/introducing-a2ui-an-open-project-for-agent-driven-interfaces/">launch post</a>.</p>
+  <p>The common thread is <strong>moments of decision</strong>: assigning, approving, choosing, confirming, reviewing a number. That's where a wall of text fails people and a well-designed card shines. The examples come from Google's <a href="https://developers.googleblog.com/a2ui-10-build-delightful-fast-reliable-agentic-experiences/">1.0 announcement</a>, its <a href="https://developers.googleblog.com/en/introducing-a2ui-an-open-project-for-agent-driven-interfaces/">launch post</a> and <a href="https://a2ui.org/introduction/where-is-it-used">a2ui.org</a>.</p>
 </div>
 </div>
 
-<section class="band" id="designers">
+<section class="band" id="workflow">
   <div class="wrap">
     <div class="col">
-      <h2>What changes for designers</h2>
+      <h2>How your design work changes</h2>
       <p>When an agent assembles the screen, nobody draws the final layout. The job moves up a level: you design the parts, the rules and the moments, and let the agent compose within them.</p>
     </div>
-    <div class="wide"><div class="lessons">
-      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><path d="M17.5 14v7M14 17.5h7"/></svg></div><h4>Your catalog is the vocabulary</h4><p>Each component's description goes into the agent's prompt and decides when it gets picked (<a href="https://developers.googleblog.com/build-generative-ui-apps-with-a2ui-copilotkit-agents/">CopilotKit</a>). Writing those descriptions is now design work.</p></div>
-      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H5v16h3M16 4h3v16h-3"/><path d="M9 12h6"/></svg></div><h4>Design contracts, not screens</h4><p>Define props, bindings and validation for every component. The Basic Catalog's 18 primitives are deliberately sparse, so real products need their own.</p></div>
-      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="4" rx="2"/><rect x="3" y="11" width="12" height="4" rx="2" opacity=".5"/><rect x="3" y="17" width="7" height="2" rx="1" opacity=".3"/></svg></div><h4>Design every partial state</h4><p>UI streams in as the agent works. Skeletons, loading order and what appears first are no longer edge cases; they're the main experience.</p></div>
-      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M8.5 12.5l2.3 2.3 4.7-5"/></svg></div><h4>Design the commit moment</h4><p>Inputs stay local until an action fires. Make that moment obvious: a clear primary button, what will be sent, and what happens next.</p></div>
-      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="5" r="2"/><path d="M5 9h14M12 9v5l-3 6M12 14l3 6"/></svg></div><h4>Accessibility travels in the payload</h4><p>Agents can send labels and descriptions with each component. Give them good defaults, and audit what generated surfaces actually announce.</p></div>
-      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg></div><h4>Design the failure path</h4><p>Invalid output gets sent back for correction; when retries run out, the surface shows a short message (<a href="https://developers.googleblog.com/build-generative-ui-apps-with-a2ui-copilotkit-agents/">CopilotKit</a>). That message deserves the same care as any empty state.</p></div>
+    <div class="wide"><div class="lessons four">
+      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><path d="M17.5 14v7M14 17.5h7"/></svg></div><h3 class="ct">Your catalog is the vocabulary</h3><p>Each component's description goes into the agent's prompt and decides when it gets picked (<a href="https://developers.googleblog.com/build-generative-ui-apps-with-a2ui-copilotkit-agents/">CopilotKit</a>). Writing those descriptions is now design work.</p></div>
+      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H5v16h3M16 4h3v16h-3"/><path d="M9 12h6"/></svg></div><h3 class="ct">Design contracts, not screens</h3><p>Define props, bindings, validation and accessibility labels for every component, the way we did for <a href="https://www.happening.design/blog/pay-ds-flutter-payment-components/">Pay DS</a>. The Basic Catalog's 18 primitives are deliberately sparse, so real products need their own.</p></div>
+      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="4" rx="2"/><rect x="3" y="11" width="12" height="4" rx="2" opacity=".5"/><rect x="3" y="17" width="7" height="2" rx="1" opacity=".3"/></svg></div><h3 class="ct">Design every in-between state</h3><p>UI streams in as the agent works, and invalid output can fail. Loading order, placeholders and the fallback message are now the main experience, not edge cases.</p></div>
+      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M8.5 12.5l2.3 2.3 4.7-5"/></svg></div><h3 class="ct">Design the commit moment</h3><p>Inputs stay local until an action fires. Make that moment obvious: a clear primary button, what will be sent, and what happens next.</p></div>
+      
+      
     </div></div>
   </div>
 </section>
 
 <div class="wrap">
 <div class="col" id="caveats">
-  <h2>The honest caveats</h2>
+  <h2>A2UI limitations: the honest caveats</h2>
   <p>A2UI is promising, but it's early. A few things to weigh before betting a product on it.</p>
   <ul class="cav">
     <li><span>Platform support is uneven. Jetpack Compose is still on 0.9.1 with 1.0 "coming soon", and Gemini itself renders 0.9.1 today (<a href="https://developers.googleblog.com/a2ui-10-build-delightful-fast-reliable-agentic-experiences/">Google</a>). The spec page itself now lists 1.0 as current, so the gap is in the renderers, not the protocol.</span></li>
@@ -462,6 +658,11 @@ footer{background:var(--cream);border-top:1px solid rgba(229,211,179,.8);padding
   <h2>The road ahead</h2>
   <p>Google's roadmap points at design-system primitives that render natively on every platform and official support for small "decision models" that pick components instead of writing text (<a href="https://developers.googleblog.com/en/a2ui-1-0-generative-ui">Google</a>). Both push in the same direction: the quality of agent-made UI will depend less on the model and more on the system it's allowed to draw with.</p>
   <p>For studios like ours, that's good news. The craft doesn't disappear when agents compose screens. It concentrates in the design system, the component contracts and the moments where a person decides. Teams that treat their design system as a product, with clear names, honest descriptions and well-designed states, will get better AI experiences for free.</p>
+
+  <div class="related"><span class="mono">More from the journal</span>
+    <a class="rel card lift" href="https://www.happening.design/blog/pay-ds-flutter-payment-components/"><b>Pay DS: payment components for Flutter, built for UPI</b><span>How we built a token-driven design system for payments.</span></a>
+    <a class="rel card lift" href="https://www.happening.design/blog/claude-pecan-skincare-brand-six-weeks/"><b>How Happening used Claude to take Pecan from brief to handoff in six weeks</b><span>An AI-native design workflow, end to end.</span></a>
+  </div>
 
   <h2 id="sources" style="font-size:22px;margin-top:64px">Sources</h2>
   <ul class="sources">
@@ -620,7 +821,9 @@ document.getElementById('codeBlock').innerHTML=all.map((m,i)=>'<span class="jp">
 const cb=document.getElementById('copyBtn');
 cb.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(all.map(m=>JSON.stringify(m)).join('\n'));cb.textContent='Copied'}catch(e){cb.textContent='Select and copy'}setTimeout(()=>cb.textContent='Copy JSONL',1800)});
 
-/* brands: same messages, different host styling */
+/* brands: same messages, different host styling (demo fonts load on approach) */
+const lazyFont=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){const l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Nunito:wght@600;800&display=swap';document.head.appendChild(l);lazyFont.disconnect()}},{rootMargin:'800px 0px'});
+lazyFont.observe(document.getElementById('stage'));
 const stage=document.getElementById('stage'),bnote=document.getElementById('bnote');
 const bs=new Surface(document.getElementById('brandMount'),{onAction:()=>{bs.apply(P.confirm);setTimeout(()=>{bs.reset();P.agent.forEach(m=>bs.apply(m))},2600)}});
 P.agent.forEach(m=>bs.apply(m));
