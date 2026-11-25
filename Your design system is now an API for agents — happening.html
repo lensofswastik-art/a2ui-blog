@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your design system is now an API for agents — happening</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Space+Mono&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a Happening journal essay — design-first take on a developer protocol, plain and honest about limits.
+   IDEA: a live protocol inspector: JSON on one side, the native UI it becomes on the other.
+   PICTURE: a streaming booking card that builds itself from A2UI messages, inside the cream hero card.
+   COLOUR and TYPE: Happening tokens — deep void, happening blue, neutral cream; Instrument Sans + Space Mono labels.
+   LAYOUT: 680px reading column, wide 1040px figures on blueprint paper, cream lessons band, studio footer. */
+:root{color-scheme:light;
+--sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"Space Mono",ui-monospace,Menlo,monospace;
+--void:#050a14;--blue:#2881e7;--navy:#25478d;--cream:#fff5e1;--shade:#e5d3b3;--sand:#f7ecd5;--sage:#e6eed6;--amber:#ffa630;
+--bg:#fff;--ink:var(--void);--body:rgba(5,10,20,.72);--mute:rgba(5,10,20,.55);--line:rgba(5,10,20,.08);--paper:#fffbf3;
+--sh-sm:0 1px 2px rgba(5,10,20,.04),0 2px 6px rgba(5,10,20,.04);
+--sh:0 1px 2px rgba(5,10,20,.04),0 10px 28px -10px rgba(5,10,20,.14);
+--sh-lg:0 2px 4px rgba(5,10,20,.04),0 30px 60px -24px rgba(5,10,20,.28);
+--ease:cubic-bezier(.2,.8,.2,1)}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:110px;scroll-behavior:smooth;background:#fff}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 18px/1.67 var(--sans);overflow-x:clip;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font-family:inherit}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 max(5vw,16px)}
+.col{max-width:680px;margin:0 auto}.wide{max-width:1040px;margin:0 auto}
+/* nav */
+.ann{background:var(--void);color:#fff;font-size:13px;text-align:center;padding:9px 16px}.ann b{font-weight:500}.ann span{color:var(--blue)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px clamp(16px,2.6vw,50px)}
+.logo{display:inline-flex;color:var(--blue);text-decoration:none}.logo svg{height:24px;width:auto;display:block}
+.links{display:flex;gap:36px;font-size:14px;font-weight:500}.links a{text-decoration:none;transition:opacity .2s}.links a:hover{opacity:.6}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;background:var(--blue);color:#fff;font:500 14px var(--sans);text-decoration:none;border:0;cursor:pointer;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px -10px rgba(40,129,231,.7)}
+.btn.dark{background:var(--void)}.btn.dark:hover{box-shadow:0 10px 24px -10px rgba(5,10,20,.6)}
+/* hero */
+.back{display:inline-flex;gap:10px;margin:44px 0 28px;text-decoration:none}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 26px;padding:0;list-style:none}
+.tags li{background:var(--sand);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500}
+h1{font-size:clamp(38px,5.6vw,68px);line-height:1.04;letter-spacing:-.035em;font-weight:600;margin:0;max-width:15ch;text-wrap:balance}
+.meta{margin:26px 0 0;display:flex;gap:20px;flex-wrap:wrap}
+.lead{font-size:21px;line-height:1.55;color:var(--body);max-width:740px;margin:22px 0 0}
+.herocard{position:relative;margin:48px 0 0;background:var(--cream);border-radius:28px;padding:clamp(20px,3.6vw,44px);overflow:hidden;isolation:isolate}
+.herocard::before{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(rgba(5,10,20,.11) 1px,transparent 1.3px);background-size:14px 14px;-webkit-mask-image:linear-gradient(100deg,#000,rgba(0,0,0,.2) 60%,transparent 85%);mask-image:linear-gradient(100deg,#000,rgba(0,0,0,.2) 60%,transparent 85%)}
+.herohead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.herohead blockquote{margin:0;font-size:clamp(26px,3vw,38px);line-height:1.06;letter-spacing:-.03em;font-weight:600;max-width:20ch}
+.herohead .mono{display:block;margin-top:10px}
+.inspector{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;align-items:stretch}
+.stream{background:#0b1020;border-radius:20px;padding:16px 0 12px;box-shadow:var(--sh-lg);display:flex;flex-direction:column;height:560px}
+.stream .bar{display:flex;align-items:center;justify-content:space-between;padding:0 16px 12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.stream .bar span{font:11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.dots i{display:inline-block;width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.16);margin-right:5px}
+.msgs{list-style:none;margin:0;padding:10px 0;flex:1;min-height:0;overflow:auto;font:12px/1.6 var(--mono);color:#cdd6f4;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
+.msgs li{padding:6px 16px;opacity:.16;transition:opacity .5s var(--ease),background .5s var(--ease);border-left:2px solid transparent}
+.msgs li.seen{opacity:.7}.msgs li.now{opacity:1;background:rgba(40,129,231,.12);border-left-color:var(--blue)}
+.msgs li.up{color:#ffd08a}
+.k1{color:#7cc4ff}.k2{color:#c3e88d}.k3{color:#ffcb6b}.k4{color:rgba(255,255,255,.4)}
+.msgs .dir{display:block;font-size:10.5px;letter-spacing:.08em;color:rgba(255,255,255,.4);text-transform:uppercase}
+.surface{position:relative;border-radius:20px;border:1.5px dashed rgba(5,10,20,.18);background:rgba(255,255,255,.5);display:grid;place-items:center;padding:36px 18px;min-height:420px;transition:border-color .5s,background .5s}
+.surface .tag{position:absolute;top:12px;left:14px;font:11px var(--mono);letter-spacing:.06em;color:var(--mute)}
+.surface.live{border-color:rgba(40,129,231,.45);background:rgba(255,255,255,.7)}
+.ctrlrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px}
+.ctrlrow .mono{margin-left:auto}
+/* booking card (rendered "native" component) */
+.bk{width:100%;max-width:340px;background:#fff;border-radius:22px;padding:20px;box-shadow:var(--sh-lg);opacity:0;transform:translateY(10px) scale(.98);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.bk.on{opacity:1;transform:none}
+.bk .row{display:flex;gap:8px;flex-wrap:wrap}
+.bk h5{margin:0;font-size:20px;letter-spacing:-.02em}
+.bk .sub{font-size:13.5px;color:var(--mute);margin:2px 0 14px}
+.bk .lbl{font:10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:12px 0 6px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;font:500 13.5px var(--sans);color:var(--ink);cursor:pointer;transition:background .3s var(--ease),color .3s var(--ease),border-color .3s,transform .2s}
+.chip:hover{transform:translateY(-1px)}
+.chip.sel{background:var(--void);color:#fff;border-color:var(--void)}
+.chip.off{color:rgba(5,10,20,.3);text-decoration:line-through;cursor:not-allowed}
+.bk .go{width:100%;margin-top:16px;justify-content:center}
+.sk{display:block;border-radius:8px;background:linear-gradient(90deg,#eef0f4 0%,#f7f8fa 50%,#eef0f4 100%);background-size:200% 100%;animation:shim 1.4s linear infinite}
+@keyframes shim{to{background-position:-200% 0}}
+.bk [data-v]{transition:opacity .4s}
+.bk:not(.data) [data-v]{display:none}.bk.data .sk{display:none}
+.done{display:none;align-items:center;gap:10px;margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--sage);font-size:14px;font-weight:500}
+.bk.booked .done{display:flex}.bk.booked .go{display:none}
+.tick{width:22px;height:22px;border-radius:50%;background:#2e7d32;color:#fff;display:grid;place-items:center;font-size:13px}
+/* A2UI renderer output */
+.a2col{display:flex;flex-direction:column;gap:4px}
+.a2col>h5{margin:0 0 2px}
+.a2text{font-size:15px;line-height:1.5;color:var(--ink)}
+.a2pick{margin:6px 0 2px}
+.a2pick .lbl{margin:6px 0 6px}
+.bk .sub{margin:0 0 6px}
+.surface .bk{max-width:340px}
+.toast{position:absolute;left:50%;bottom:14px;transform:translate(-50%,8px);background:var(--void);color:#fff;font:12px var(--mono);letter-spacing:.02em;padding:7px 12px;border-radius:999px;opacity:0;transition:opacity .35s var(--ease),transform .35s var(--ease);pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.msgs li{white-space:pre-wrap;word-break:break-word}
+.jk{color:#7cc4ff}.js{color:#ffcb6b}.jn{color:#f78c6c}.jp{color:rgba(205,214,244,.55)}
+.code pre .jk{color:#7cc4ff}.code pre .js{color:#c3e88d}
+.code pre.tall{max-height:560px;overflow:auto}
+.valid{display:inline-flex;align-items:center;gap:6px;background:var(--sage);color:#2f5a14;border-radius:999px;padding:4px 10px;font:500 12.5px var(--sans)}
+/* floating section pill */
+.toc{position:sticky;top:14px;z-index:20;display:flex;justify-content:center;margin:56px auto 0;padding:0 16px;pointer-events:none}
+.toc .scroll{pointer-events:auto;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding:6px;border-radius:999px;background:rgba(255,255,255,.8);-webkit-backdrop-filter:blur(16px) saturate(1.5);backdrop-filter:blur(16px) saturate(1.5);border:1px solid var(--line);box-shadow:var(--sh)}
+.toc .scroll::-webkit-scrollbar{display:none}
+.toc a{flex:none;white-space:nowrap;font-size:13.5px;font-weight:500;text-decoration:none;padding:8px 14px;border-radius:999px;color:var(--body);transition:background .35s var(--ease),color .35s var(--ease)}
+.toc a:hover{color:var(--ink);background:rgba(5,10,20,.04)}.toc a.on{background:var(--void);color:#fff}
+/* article */
+article{padding:16px 0 40px}
+article h2{font-size:clamp(26px,3vw,34px);line-height:1.1;letter-spacing:-.025em;font-weight:600;margin:96px 0 18px;text-wrap:balance}
+article h3{font-size:21px;line-height:1.3;letter-spacing:-.015em;font-weight:600;margin:40px 0 10px}
+article p,article li{color:var(--body)}
+article p{margin:0 0 20px}
+article strong{color:var(--ink);font-weight:600}
+article a{text-decoration-color:rgba(40,129,231,.45);text-underline-offset:3px;transition:color .2s}
+article a:hover{color:var(--blue)}
+article code{font:14px var(--mono);background:var(--sand);padding:1px 6px;border-radius:6px;color:var(--ink)}
+.pull{font-size:clamp(24px,2.7vw,32px);line-height:1.2;letter-spacing:-.025em;font-weight:600;color:var(--ink);margin:44px 0;padding:28px 30px;background:var(--cream);border-radius:22px;position:relative}
+.pull::before{content:"";position:absolute;left:30px;top:-6px;width:40px;height:12px;border-radius:6px;background:var(--blue)}
+figure,figure.col,figure.wide{margin:48px auto 60px}
+.print{position:relative;background:var(--paper);border:1px solid rgba(229,211,179,.7);border-radius:24px;padding:clamp(16px,3vw,32px);box-shadow:var(--sh-sm);background-image:linear-gradient(rgba(229,211,179,.38) 1px,transparent 1px),linear-gradient(90deg,rgba(229,211,179,.38) 1px,transparent 1px);background-size:24px 24px;background-position:-1px -1px}
+figcaption{margin-top:14px;display:flex;gap:4px 12px;flex-wrap:wrap;align-items:baseline}
+figcaption code{font:12px var(--mono);color:var(--ink);background:none;padding:0}
+.note{font-size:14px;color:var(--mute);margin:10px 0 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--sh);transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
+.card.lift:hover{transform:translateY(-4px);box-shadow:var(--sh-lg)}
+/* segmented */
+.seg{position:relative;display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px;box-shadow:var(--sh-sm);max-width:100%}
+.seg .thumb{position:absolute;top:4px;bottom:4px;left:0;width:0;border-radius:999px;background:var(--void);box-shadow:0 6px 14px -6px rgba(5,10,20,.6);transition:transform .5s var(--ease),width .5s var(--ease)}
+.seg button{position:relative;z-index:1;min-height:40px;padding:0 16px;border-radius:999px;border:0;background:transparent;color:var(--body);font:500 14px var(--sans);cursor:pointer;white-space:nowrap;transition:color .4s var(--ease)}
+.seg button[aria-pressed=true]{color:#fff}
+.ghost{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);font:500 14px var(--sans);cursor:pointer;box-shadow:var(--sh-sm);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.ghost:hover{transform:translateY(-1px);box-shadow:var(--sh)}
+.ghost:focus-visible,.seg button:focus-visible,.btn:focus-visible,.chip:focus-visible,.toc a:focus-visible,.node:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+/* text vs card */
+.vs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin-top:18px;align-items:start}
+.chat{display:flex;flex-direction:column;gap:8px;padding:18px;min-height:360px}
+.bub{max-width:82%;padding:10px 14px;border-radius:18px;font-size:15px;line-height:1.45;opacity:0;transform:translateY(6px);transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.bub.on{opacity:1;transform:none}
+.bub.u{align-self:flex-end;background:var(--void);color:#fff;border-bottom-right-radius:6px}
+.bub.a{align-self:flex-start;background:#f1f2f5;color:var(--ink);border-bottom-left-radius:6px}
+.count{display:flex;justify-content:space-between;align-items:baseline;padding:12px 18px;border-top:1px solid var(--line);font-size:14px;color:var(--body)}
+.count b{font-size:22px;color:var(--ink);letter-spacing:-.02em}
+.cardside{padding:18px;display:flex;flex-direction:column;align-items:center;gap:12px;min-height:360px;justify-content:center}
+.cardside .bk{opacity:1;transform:none;box-shadow:var(--sh)}
+.dim{opacity:.35;filter:grayscale(.4);transition:opacity .5s var(--ease),filter .5s}
+/* architecture */
+.archscroll{overflow-x:auto}.archscroll svg{min-width:760px;width:100%;height:auto;display:block}.swipe{display:none;margin:0 0 8px}
+.node{cursor:pointer;outline:none}.node .ring{opacity:0;transition:opacity .35s var(--ease)}
+.node:hover .ring,.node:focus-visible .ring,.node.sel .ring{opacity:1}
+.node .b.w{transition:fill .35s var(--ease)}.node:hover .b.w,.node.sel .b.w{fill:#f3f8ff}
+.flow{stroke:var(--blue);stroke-width:2;stroke-dasharray:3 13;stroke-linecap:round;fill:none;animation:flow 1.6s linear infinite;opacity:.85}
+.flow.back{stroke:var(--amber)}
+@keyframes flow{to{stroke-dashoffset:-32}}
+.panel{margin-top:18px;padding:20px 22px;min-height:124px;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;align-items:start}
+.panel .ic{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--navy));box-shadow:0 8px 18px -8px rgba(40,129,231,.9);display:grid;place-items:center;color:#fff;font:600 13px var(--sans)}
+.panel h4{margin:2px 0 6px;font-size:19px;letter-spacing:-.015em}.panel p{margin:0;font-size:15.5px;line-height:1.55;color:var(--body)}
+.swap{animation:swap .5s var(--ease)}@keyframes swap{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* code */
+.code{background:#0b1020;border-radius:20px;box-shadow:var(--sh-lg);overflow:hidden}
+.code .bar{display:flex;justify-content:space-between;align-items:center;padding:10px 12px 10px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+.code .bar span{font:11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.code .bar button{min-height:34px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:transparent;color:#fff;font:500 13px var(--sans);cursor:pointer}
+.code pre{margin:0;padding:18px 20px;overflow-x:auto;font:13px/1.7 var(--mono);color:#cdd6f4}
+/* brands */
+.brands{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:18px;margin-top:18px;align-items:stretch}
+.brands .code pre{font-size:12px;height:100%}
+.stage{border-radius:20px;display:grid;place-items:center;padding:26px 18px;min-height:400px;transition:background .6s var(--ease)}
+.stage .bk{opacity:1;transform:none;transition:all .6s var(--ease)}
+.stage .bk .chip,.stage .bk .go{transition:all .6s var(--ease)}
+/* theme: happening */
+.stage.t-hap{background:var(--cream)}
+/* theme: ledger (fictional bank) */
+.stage.t-led{background:#0e1a2b}
+.t-led .bk{border-radius:6px;background:#fff;box-shadow:0 20px 40px -20px rgba(0,0,0,.6);font-family:"Fraunces",Georgia,serif}
+.t-led .bk h5{font:600 22px "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.t-led .bk .sub,.t-led .bk .lbl{font-family:var(--sans)}
+.t-led .chip{border-radius:4px;font-family:var(--sans);border-color:#c9d2de}
+.t-led .chip.sel{background:#0e1a2b;border-color:#0e1a2b}
+.t-led .go{border-radius:4px;background:#0e1a2b}
+/* theme: pip (fictional consumer app) */
+.stage.t-pip{background:linear-gradient(135deg,#e9e4ff,#ffe8f3)}
+.t-pip .bk{border-radius:32px;font-family:"Nunito",var(--sans);box-shadow:0 24px 40px -20px rgba(98,0,179,.45)}
+.t-pip .bk h5{font:800 22px "Nunito",var(--sans)}
+.t-pip .chip{font-family:"Nunito",var(--sans);font-weight:800;border:2px solid #e3dcff;border-radius:16px}
+.t-pip .chip.sel{background:#6200b3;border-color:#6200b3}
+.t-pip .go{background:#ff5ca8;border-radius:18px;font-family:"Nunito",var(--sans);font-weight:800}
+.bnote{margin-top:14px;padding:14px 18px;font-size:15px;line-height:1.5;color:var(--body)}
+.bnote b{color:var(--ink)}
+/* spectrum */
+.spec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.spec .card{padding:20px 20px 22px;position:relative}
+.spec h4{margin:8px 0 6px;font-size:19px;letter-spacing:-.015em}.spec p{margin:0;font-size:14.5px;line-height:1.5;color:var(--body)}
+.spec .proto{display:inline-block;margin-top:12px;background:var(--sand);border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:500;color:var(--ink)}
+.spec .card.mid{box-shadow:0 0 0 2px var(--blue),var(--sh)}
+.axis{position:relative;height:10px;border-radius:999px;margin:0 0 18px;background:linear-gradient(90deg,var(--void),var(--blue) 50%,var(--amber))}
+.axisl{display:flex;justify-content:space-between;margin:-8px 0 16px}
+.meter{display:flex;gap:4px;margin-top:12px}.meter i{flex:1;height:6px;border-radius:3px;background:rgba(5,10,20,.08)}
+.meter i.f{background:var(--blue)}.meter.fr i.f{background:var(--amber)}
+.mrow{display:grid;grid-template-columns:70px minmax(0,1fr);gap:8px;align-items:center;font:10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-top:8px}
+.mrow .meter{margin:0}
+/* adopters */
+.adopt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.ad{padding:18px 20px 20px}
+.ad .who{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ad h4{margin:0;font-size:18px;letter-spacing:-.015em}
+.ad .plat{font:10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--blue);background:#eef5fe;border-radius:999px;padding:4px 9px;white-space:nowrap}
+.ad p{margin:8px 0 0;font-size:14.5px;line-height:1.5;color:var(--body)}
+.verts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.verts span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13.5px;box-shadow:var(--sh-sm)}
+.verts b{font-weight:600}
+/* lessons band */
+.band{background:var(--cream);margin:88px 0 0;padding:clamp(48px,7vw,96px) 0 clamp(56px,7vw,100px)}
+.band h2{margin-top:0!important}
+.lessons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:32px 0 0}
+.lesson{padding:22px 22px 24px}
+.lesson .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--cream);margin-bottom:14px}
+.lesson .ic svg{width:22px;height:22px}
+.lesson h4{margin:0 0 6px;font-size:18px;letter-spacing:-.015em}.lesson p{margin:0;font-size:15px;line-height:1.55;color:var(--body)}
+/* caveats */
+.cav{list-style:none;padding:0;margin:20px 0;display:grid;gap:10px}
+.cav li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:12px;padding:14px 16px;border-radius:16px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh-sm);font-size:16px;line-height:1.55}
+.cav li::before{content:"!";width:24px;height:24px;border-radius:50%;background:rgba(255,166,48,.22);color:#b86a00;font:700 13px/24px var(--sans);text-align:center}
+.sources{font-size:15px;padding-left:20px}.sources li{margin-bottom:6px}
+/* cta + footer */
+.cta{background:linear-gradient(var(--bg),var(--cream) 34%);text-align:center;padding:130px 16px 120px}
+.cta h2{font-size:clamp(34px,4.6vw,56px);line-height:1.04;letter-spacing:-.035em;font-weight:600;margin:0 auto 28px;max-width:17ch;text-wrap:balance}
+footer{background:var(--cream);border-top:1px solid rgba(229,211,179,.8);padding:44px clamp(16px,2.6vw,50px) 52px}
+.fgrid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:28px;font-size:14.5px;color:var(--body)}
+.fgrid h5{margin:0 0 10px;font:400 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.fgrid p{margin:0 0 6px}
+@media(max-width:900px){.inspector,.vs,.brands{grid-template-columns:minmax(0,1fr)}.spec,.adopt,.lessons{grid-template-columns:minmax(0,1fr)}.fgrid{grid-template-columns:minmax(0,1fr)}.links{display:none}.stream{height:auto}.surface{min-height:340px}.msgs{max-height:340px}.ctrlrow .mono{margin-left:0}}
+@media(max-width:600px){body{font-size:17px}.swipe{display:block}.seg button{padding:0 12px;font-size:13.5px}.panel{grid-template-columns:minmax(0,1fr)}.panel .ic{display:none}.adopt{grid-template-columns:minmax(0,1fr)}.chat,.cardside{min-height:0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="wordmark" viewBox="0 0 1882.14 301.981"><path d="M6.53395 121.522C114.833 72.3146 228.286 -5.68818 336.591 4.14683V120.206C228.292 169.374 114.839 247.416 6.53395 237.568V121.522ZM336.603 228.998C275.779 238.002 237.619 240.156 171.562 228.998V210.095C233.453 184.986 287.631 152.727 336.603 129.19V228.998ZM6.53395 12.3522C67.3522 3.34792 105.506 1.20071 171.562 12.3522V31.2685C109.672 56.4025 55.5064 88.662 6.53395 112.186V12.3522Z"/><path d="M418.562 231.765V3.29923H445.448V87.8314C455.285 75.429 472.335 63.353 500.533 63.353C538.24 63.353 568.077 83.9149 568.077 139.073V231.765H541.191V140.705C541.191 106.109 525.124 87.8314 496.27 87.8314C462.498 87.8314 445.448 108.72 445.448 143.969V231.765H418.562Z"/><path d="M762.456 297.04V65.3113H785.736V92.6984C796.884 77.3585 818.524 63.353 846.722 63.353C892.954 63.353 927.054 94.359 927.054 148.538C927.054 199.453 892.954 233.723 846.722 233.723C818.524 233.723 799.507 222.3 789.343 206.307V297.04H762.456ZM844.099 209.897C877.216 209.897 899.512 184.766 899.512 148.538C899.512 112.31 877.216 87.1787 844.099 87.1787C811.311 87.1787 789.015 112.31 789.015 147.885C789.015 184.44 811.311 209.897 844.099 209.897Z"/><path d="M948.812 297.04V65.3113H972.092L972.687 94.0724C983.835 78.7326 1004.88 63.353 1033.08 63.353C1079.31 63.353 1113.41 94.359 1113.41 148.538C1113.41 199.453 1079.31 233.723 1033.08 233.723C1004.88 233.723 985.863 222.3 975.699 206.307V297.04H948.812ZM1030.46 209.897C1063.57 209.897 1085.87 184.766 1085.87 148.538C1085.87 112.31 1063.57 87.1787 1030.46 87.1787C997.667 87.1787 975.371 112.31 975.371 147.885C975.371 184.44 997.667 209.897 1030.46 209.897Z"/><path d="M1210.91 233.723C1160.74 233.723 1127.96 199.453 1127.960 148.538C1127.96 97.9492 1160.09 63.353 1207.3 63.353C1254.19 63.353 1286 93.7063 1286 144.295V153.76H1156.15V156.045C1156.15 187.703 1177.14 209.897 1208.94 209.897C1233.21 209.897 1251.57 197.495 1257.14 175.954H1284.36C1277.8 209.244 1249.6 233.723 1210.91 233.723ZM1157.14 131.24H1257.8C1255.17 102.845 1235.5 86.8523 1207.63 86.8523C1183.04 86.8523 1160.09 103.498 1157.14 131.24Z"/><path d="M1307.76 231.765V65.3113H1331.04V87.8314C1340.87 75.1026 1361.53 63.353 1389.73 63.353C1427.43 63.353 1457.27 83.9149 1457.27 139.073V231.765H1430.38V140.705C1430.38 106.109 1414.32 87.8314 1385.46 87.8314C1351.69 87.8314 1334.64 108.72 1334.64 143.969V231.765H1307.76Z"/><path d="M1484.83 231.765V65.3113H1511.71V231.765H1484.83Z"/><path d="M1540.86 231.765V65.3113H1564.14V87.8314C1573.98 75.1026 1594.63 63.353 1622.83 63.353C1660.54 63.353 1690.38 83.9149 1690.38 139.073V231.765H1663.49V140.705C1663.49 106.109 1647.42 87.8314 1618.57 87.8314C1584.8 87.8314 1567.75 108.72 1567.75 143.969V231.765H1540.86Z"/><path d="M1792.36 298.999C1749.74 298.999 1719.9 279.09 1715.64 242.535H1743.18C1747.77 263.423 1766.46 275.173 1794.33 275.173C1829.41 275.173 1848.43 258.854 1848.43 222.626V205.002C1837.28 220.341 1819.25 233.723 1791.05 233.723C1744.82 233.723 1710.72 202.717 1710.72 148.538C1710.72 97.6228 1744.82 63.353 1791.05 63.353C1819.25 63.353 1841.87 75.7997 1852.04 91.7922V65.3113H1875.32V223.605C1875.32 271.583 1849.74 298.999 1792.36 298.999ZM1793.67 209.897C1826.46 209.897 1848.76 184.766 1848.76 149.191C1848.76 112.636 1826.46 87.1787 1793.67 87.1787C1760.56 87.1787 1738.26 112.31 1738.26 148.538C1738.26 184.766 1760.56 209.897 1793.67 209.897Z"/><path d="M705.801 206.633L705.856 209.471C705.818 208.548 705.801 207.602 705.801 206.633Z"/><path d="M588.091 185.092C588.091 215.446 613.01 233.723 649.733 233.723C678.587 233.723 695.965 220.994 705.801 205.981V206.633L705.856 209.471L705.801 231.689L731.376 231.764V196.189V123.407C731.376 84.5676 706.785 63.353 664.16 63.353C623.83 63.353 597.272 82.6094 593.337 115.247H620.224C623.502 98.2756 638.257 87.1787 662.849 87.1787C689.079 87.1787 704.49 99.2547 704.49 121.775V133.198H655.307C611.371 133.198 588.091 151.802 588.091 185.092ZM704.49 163.878C704.49 191.62 685.145 210.876 651.7 210.876C629.404 210.876 615.305 201.085 615.305 183.461C615.305 164.531 628.749 155.718 652.684 155.718H704.49V163.878Z"/></symbol></defs></svg>
+
+<div class="ann">New book launching soon — <b>Small Teams Ship More.</b> <span>→</span></div>
+<header class="topbar">
+  <a class="logo" href="#top" aria-label="happening — home"><svg viewBox="0 0 1882.14 301.981" fill="currentColor"><use href="#wordmark"/></svg></a>
+  <nav class="links" aria-label="Main"><a href="#top">Work</a><a href="#top">About</a><a href="#top">Journal</a></nav>
+  <a class="btn" href="#connect">Connect with us</a>
+</header>
+
+<div class="wrap" id="top">
+  <a class="back mono" href="#top">← Journal</a>
+  <ul class="tags"><li>AI in Design</li><li>Design Systems</li><li>Generative UI</li></ul>
+  <h1>Your design system is now an API for agents.</h1>
+  <div class="meta mono"><span>Nov 25, 2026</span><span>11 min read</span><span>Swastik Bose</span></div>
+  <p class="lead">Google's A2UI 1.0 lets AI agents answer with real interfaces instead of paragraphs. The catch is the interesting part: an agent can only build with the components you register. Here is what that means for anyone who designs products.</p>
+
+  <div class="herocard">
+    <div class="herohead">
+      <div><blockquote>“Safe like data, but expressive like code.”</blockquote><span class="mono">Google's A2UI team, on what the protocol is for</span></div>
+    </div>
+    <div class="inspector">
+      <div class="stream" aria-label="A2UI message stream">
+        <div class="bar"><span class="dots"><i></i><i></i><i></i></span><span>A2UI stream · agent → app</span></div>
+        <ol class="msgs" id="msgs"></ol>
+      </div>
+      <div class="surface" id="surf">
+        <span class="tag" id="surfTag">waiting for agent…</span>
+        <div id="heroMount" style="width:100%;display:grid;place-items:center"></div>
+        <span class="toast" id="toast"></span>
+      </div>
+    </div>
+    <div class="ctrlrow"><button class="ghost" id="hPlay">Pause</button><button class="ghost" id="hStep">Next message →</button><span class="mono">Real A2UI v1.0 messages, schema-validated · restaurant is fictional</span></div>
+  </div>
+</div>
+
+<nav class="toc" aria-label="Sections"><div class="scroll">
+  <a href="#shift">The shift</a><a href="#turns">Text vs UI</a><a href="#how">How it works</a><a href="#brands">Your brand</a><a href="#spectrum">Where it fits</a><a href="#who">Who's using it</a><a href="#designers">For designers</a><a href="#caveats">Caveats</a><a href="#sources">Sources</a>
+</div></nav>
+
+<article>
+<div class="wrap">
+<div class="col" id="shift">
+  <h2>Agents are learning to answer with interfaces</h2>
+  <p>On November 11, 2026, Google released <a href="https://developers.googleblog.com/a2ui-10-build-delightful-fast-reliable-agentic-experiences/">A2UI 1.0</a>, the first stable version of its open protocol for generative UI. The idea is simple: instead of replying with text, an agent describes what to show, like a form to confirm or a chart, and the app draws it with its own native components.</p>
+  <p>Most coverage treats this as a developer story. It's a design story first. A2UI's central rule is that the agent can only place and configure components the developer has registered. Nothing else gets on screen. That makes the component library the boundary of what an AI can say visually.</p>
+  <p class="pull">For a decade, design systems kept humans consistent. Now they decide what machines are allowed to show.</p>
+  <p>That's a big promotion for something many teams still treat as a Figma library and a Storybook. Let's look at how the protocol works, who's already using it, and what changes in how we design.</p>
+</div>
+
+<div class="col" id="turns">
+  <h2>Six messages, or one card</h2>
+  <p>Google's original A2UI post, from December 2025, opens with a familiar pain. Ask a text-only agent to book a table for two and you get a slow back-and-forth about the day, the time and availability. A form with a date picker, a time selector and a submit button does the same job in one step. Compare the two below.</p>
+</div>
+<figure class="wide">
+  <div class="print">
+    <div class="seg" role="group" aria-label="Compare" id="vsSeg"><span class="thumb"></span><button aria-pressed="true" data-v="text">Text-only agent</button><button aria-pressed="false" data-v="ui">Agent with A2UI</button></div>
+    <div class="vs">
+      <div class="card" id="chatSide">
+        <div class="chat" id="chat">
+          <div class="bub u">Book a table for two this Friday.</div>
+          <div class="bub a">Sure. What time works for you?</div>
+          <div class="bub u">Around 7?</div>
+          <div class="bub a">7:00 is full. I can do 7:30 or 8:15.</div>
+          <div class="bub u">7:30. Indoors if possible.</div>
+          <div class="bub a">Done. Can I get a name for the booking?</div>
+        </div>
+        <div class="count"><span>Messages to book</span><b id="cnt1">6</b></div>
+      </div>
+      <div class="card" id="cardSide">
+        <div class="cardside">
+          <div id="vsMount" style="width:100%;display:grid;place-items:center"></div>
+        </div>
+        <div class="count"><span>Messages to book</span><b>1 card · 1 tap</b></div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="mono"><code>TextVsUI</code><span>Sample conversation · the card is rendered live from real A2UI v1.0 messages · fictional restaurant</span></figcaption>
+</figure>
+
+<div class="col" id="how">
+  <h2>How it works: a blueprint, not a webpage</h2>
+  <p>A2UI is a stream of small JSON messages. In the v1.0 spec, the agent creates a <strong>surface</strong>, sends <strong>components</strong> as a flat list where each one has an id and parents point to children by id, then fills a <strong>data model</strong> that components bind to with JSON Pointer paths (<a href="https://a2ui.org/specification/v1.0-a2ui/">A2UI spec</a>). Because the list is flat and ID-based, the app can start drawing before the whole tree exists. That's exactly what the card at the top does: it's drawn from real v1.0 messages, so the grey placeholders are bindings still waiting for data.</p>
+  <p>The return path matters just as much. Inputs write to a local data model straight away, but nothing goes back to the agent until a user action fires. Version 1.0 also adds bidirectional function calls, so a picker can check availability in place (<a href="https://developers.googleblog.com/a2ui-10-build-delightful-fast-reliable-agentic-experiences/">Google</a>). Tap a block below to see what each part does.</p>
+</div>
+<figure class="wide">
+  <div class="print">
+    <p class="mono swipe">Swipe sideways to see the full flow →</p>
+    <div class="archscroll">
+      <svg viewBox="0 0 1000 390" role="group" aria-label="A2UI flow: agent sends A2UI messages over a transport to the app's renderer, which checks them against its catalog and draws native components; user actions flow back" font-family="Instrument Sans, system-ui, sans-serif">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#b9ab90"/></marker>
+          <filter id="nsh" x="-20%" y="-30%" width="140%" height="180%"><feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#050a14" flood-opacity=".10"/><feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#050a14" flood-opacity=".06"/></filter>
+          <linearGradient id="pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2881e7"/><stop offset="1" stop-color="#25478d"/></linearGradient>
+        </defs>
+        <text x="20" y="40" font-family="Space Mono, monospace" font-size="11" fill="rgba(5,10,20,.5)" letter-spacing=".5">AGENT SIDE</text>
+        <text x="632" y="40" font-family="Space Mono, monospace" font-size="11" fill="rgba(5,10,20,.5)" letter-spacing=".5">YOUR APP</text>
+        <line x1="605" y1="30" x2="605" y2="300" stroke="#cbbd9f" stroke-dasharray="4 6"/>
+        <g fill="none" stroke="#cbbd9f" stroke-width="1.5">
+          <path d="M170 140H208" marker-end="url(#ar)"/><path d="M380 140H418" marker-end="url(#ar)"/><path d="M590 140H628" marker-end="url(#ar)"/><path d="M800 140H838" marker-end="url(#ar)"/>
+          <path d="M295 252V178" stroke-dasharray="5 5" marker-end="url(#ar)"/>
+          <path d="M910 178V350H95V180" marker-end="url(#ar)"/>
+        </g>
+        <g><path class="flow" d="M170 140H208"/><path class="flow" d="M380 140H418"/><path class="flow" d="M590 140H628"/><path class="flow" d="M800 140H838"/><path class="flow back" d="M910 178V350H95V180"/></g>
+        <text x="500" y="372" text-anchor="middle" font-family="Space Mono, monospace" font-size="11" fill="#b86a00" letter-spacing=".5">USER ACTION · FUNCTION CALLS → BACK TO THE AGENT</text>
+        <g class="node" data-k="agent" tabindex="0" role="button" aria-label="Agent"><rect class="ring" x="16" y="98" width="158" height="84" rx="16" fill="none" stroke="#2881e7" stroke-width="2"/><rect class="b w" x="20" y="102" width="150" height="76" rx="13" fill="#fff" stroke="rgba(5,10,20,.08)" filter="url(#nsh)"/><text x="95" y="134" text-anchor="middle" font-weight="600" font-size="15" fill="#050a14">Agent</text><text x="95" y="156" text-anchor="middle" font-family="Space Mono, monospace" font-size="10.5" fill="rgba(5,10,20,.5)">LLM OR DECISION MODEL</text></g>
+        <g class="node" data-k="msgs" tabindex="0" role="button" aria-label="A2UI messages"><rect class="ring" x="206" y="98" width="178" height="84" rx="16" fill="none" stroke="#2881e7" stroke-width="2"/><rect class="b w" x="210" y="102" width="170" height="76" rx="13" fill="#fff" stroke="rgba(5,10,20,.08)" filter="url(#nsh)"/><text x="295" y="134" text-anchor="middle" font-weight="600" font-size="15" fill="#050a14">A2UI messages</text><text x="295" y="156" text-anchor="middle" font-family="Space Mono, monospace" font-size="10.5" fill="#2881e7">JSON · NOT CODE</text></g>
+        <g class="node" data-k="data" tabindex="0" role="button" aria-label="Your data"><rect class="ring" x="206" y="248" width="178" height="64" rx="16" fill="none" stroke="#2881e7" stroke-width="2"/><rect class="b" x="210" y="252" width="170" height="56" rx="13" fill="#fff5e1" stroke="#cbbd9f" stroke-width="1.4" stroke-dasharray="6 5"/><text x="295" y="277" text-anchor="middle" font-weight="600" font-size="14" fill="#050a14">Your data</text><text x="295" y="296" text-anchor="middle" font-family="Space Mono, monospace" font-size="10" fill="rgba(5,10,20,.5)">BOUND ON THE SERVER</text></g>
+        <g class="node" data-k="transport" tabindex="0" role="button" aria-label="Transport"><rect class="ring" x="416" y="98" width="178" height="84" rx="16" fill="none" stroke="#2881e7" stroke-width="2"/><rect class="b w" x="420" y="102" width="170" height="76" rx="13" fill="#fff" stroke="rgba(5,10,20,.08)" filter="url(#nsh)"/><text x="505" y="134" text-anchor="middle" font-weight="600" font-size="15" fill="#050a14">Transport</text><text x="505" y="156" text-anchor="middle" font-family="Space Mono, monospace" font-size="10.5" fill="rgba(5,10,20,.5)">A2A · AG-UI · MCP</text></g>
+        <g class="node" data-k="catalog" tabindex="0" role="button" aria-label="Renderer and catalog"><rect class="ring" x="625" y="93" width="180" height="94" rx="17" fill="none" stroke="#2881e7" stroke-width="2"/><rect class="b" x="630" y="98" width="170" height="84" rx="13" fill="url(#pg)" filter="url(#nsh)"/><text x="715" y="130" text-anchor="middle" font-weight="600" font-size="15" fill="#fff">Renderer + catalog</text><text x="715" y="151" text-anchor="middle" font-family="Space Mono, monospace" font-size="10.5" fill="#cfe2fb">YOUR ALLOWLIST</text><text x="715" y="169" text-anchor="middle" font-size="12" fill="rgba(255,255,255,.78)">anything else is rejected</text></g>
+        <g class="node" data-k="native" tabindex="0" role="button" aria-label="Native UI"><rect class="ring" x="836" y="98" width="148" height="84" rx="16" fill="none" stroke="#2881e7" stroke-width="2"/><rect class="b w" x="840" y="102" width="140" height="76" rx="13" fill="#fff" stroke="rgba(5,10,20,.08)" filter="url(#nsh)"/><text x="910" y="134" text-anchor="middle" font-weight="600" font-size="15" fill="#050a14">Native UI</text><text x="910" y="156" text-anchor="middle" font-family="Space Mono, monospace" font-size="10.5" fill="rgba(5,10,20,.5)">YOUR COMPONENTS</text></g>
+      </svg>
+    </div>
+    <div class="panel card" aria-live="polite"><div class="ic" id="pi">CAT</div><div id="pbody"><span class="mono" id="pk"></span><h4 id="pt"></h4><p id="pd"></p></div></div>
+  </div>
+  <figcaption class="mono"><code>A2UIFlow</code><span>Based on Google's A2UI posts and the v1.0 spec</span></figcaption>
+</figure>
+<div class="col">
+  <p>Here is the exact stream behind the booking card at the top of this page. Note what's missing: no colours, no fonts, no spacing. In 1.0 the spec removed built-in theme properties entirely and left styling to each platform's native theme (<a href="https://a2ui.org/specification/v1.0-a2ui/">A2UI spec</a>).</p>
+  <div class="code">
+    <div class="bar"><span>booking.a2ui.jsonl · A2UI v1.0</span><button id="copyBtn">Copy JSONL</button></div>
+<pre class="tall" id="codeBlock"></pre>
+  </div>
+  <p class="note"><span class="valid">✓ Valid</span> All five messages pass the official v1.0 JSON schemas and Basic Catalog from <a href="https://github.com/a2ui-project/a2ui">a2ui-project/a2ui</a>. The cards on this page are drawn from them by a small renderer written for this post in Happening's style, not Google's official renderer.</p>
+</div>
+
+<div class="col" id="brands">
+  <h2>One message, three brands</h2>
+  <p>This is the part designers should care about most. Because the agent sends intent and the app owns the pixels, the same message renders natively in whatever design system receives it. Google's pitch puts it plainly: agents use your design system and nothing else (<a href="https://developers.googleblog.com/en/a2ui-1-0-generative-ui">Google</a>). Switch the host below; the JSON on the left never changes.</p>
+</div>
+<figure class="wide">
+  <div class="print">
+    <div class="seg" role="group" aria-label="Host app" id="brandSeg"><span class="thumb"></span><button aria-pressed="true" data-t="hap">Happening</button><button aria-pressed="false" data-t="led">Ledger bank</button><button aria-pressed="false" data-t="pip">Pip app</button></div>
+    <div class="brands">
+      <div class="code"><div class="bar"><span>Same A2UI payload · component tree</span><span>unchanged</span></div>
+<pre id="brandTree"></pre></div>
+      <div class="stage t-hap" id="stage"><div id="brandMount" style="width:100%;display:grid;place-items:center"></div></div>
+    </div>
+    <div class="bnote card" aria-live="polite" id="bnote"></div>
+  </div>
+  <figcaption class="mono"><code>OneMessageThreeBrands</code><span>Ledger and Pip are fictional host apps for illustration</span></figcaption>
+</figure>
+<div class="col">
+  <p>Compare that with the older approach of shipping HTML in an iframe. Google's team calls it heavy, visually disjointed from the host and hard to secure (<a href="https://developers.googleblog.com/en/introducing-a2ui-an-open-project-for-agent-driven-interfaces/">Google</a>). With A2UI the host keeps control of the look, and accessibility comes from the host's native components plus an <code>@accessibility</code> object the agent can fill with labels and descriptions (<a href="https://a2ui.org/specification/v1.0-a2ui/">spec</a>).</p>
+</div>
+
+<div class="col" id="spectrum">
+  <h2>Where it fits: control versus freedom</h2>
+  <p>A2UI isn't the only way to let agents touch UI, and it isn't meant to replace the others. CopilotKit, which co-builds much of this ecosystem, sorts generative UI into three patterns by how much the agent controls (<a href="https://github.com/CopilotKit/generative-ui">CopilotKit</a>). Google Cloud frames the same trade-off as brand safety and security against visual flexibility (<a href="https://cloud.google.com/discover/generative-ui">Google Cloud</a>).</p>
+</div>
+<figure class="wide">
+  <div class="print">
+    <div class="axis" aria-hidden="true"></div>
+    <div class="axisl mono"><span>Your team controls the UI</span><span>The agent controls the UI</span></div>
+    <div class="spec">
+      <div class="card lift"><span class="mono">Controlled</span><h4>Pre-built screens</h4><p>You hand-build components; the agent only decides when to show them and fills in data.</p>
+        <div class="mrow">Control<div class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></div></div>
+        <div class="mrow">Freedom<div class="meter fr"><i class="f"></i><i></i><i></i><i></i><i></i></div></div>
+        <span class="proto">AG-UI tool calls</span></div>
+      <div class="card lift mid"><span class="mono" style="color:var(--blue)">Declarative</span><h4>Composed from your parts</h4><p>The agent arranges components from your catalog into new layouts, but can't invent new ones.</p>
+        <div class="mrow">Control<div class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></div></div>
+        <div class="mrow">Freedom<div class="meter fr"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></div></div>
+        <span class="proto">A2UI · Open-JSON-UI</span></div>
+      <div class="card lift"><span class="mono">Open-ended</span><h4>The tool brings its own UI</h4><p>A server ships a full web app, rendered in a sandboxed iframe with its own look.</p>
+        <div class="mrow">Control<div class="meter"><i class="f"></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="mrow">Freedom<div class="meter fr"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></div></div>
+        <span class="proto">MCP Apps</span></div>
+    </div>
+  </div>
+  <figcaption class="mono"><code>Spectrum</code><span>Patterns per CopilotKit · meter levels are our relative reading</span></figcaption>
+</figure>
+<div class="col">
+  <p>They also combine. A2UI's web and Flutter renderers work inside MCP Apps, which is how A2UI screens can appear in assistants like Claude and Gemini (<a href="https://developers.googleblog.com/en/a2ui-1-0-generative-ui">Google</a>). In practice, a team might hand-build its core workflows, let agents compose the long tail with A2UI, and embed a partner's MCP App where it owns the whole experience.</p>
+</div>
+
+<div class="col" id="who">
+  <h2>Who's already using it</h2>
+  <p>A2UI has moved past demos. These are the uses named in Google's 1.0 announcement and A2UI's own docs.</p>
+</div>
+<figure class="wide">
+  <div class="adopt">
+    <div class="ad card lift"><div class="who"><h4>Atlassian</h4><span class="plat">Jira</span></div><p>Agents assigning work items ask follow-up questions through interactive cards instead of chat.</p></div>
+    <div class="ad card lift"><div class="who"><h4>Alation</h4><span class="plat">Claude · own app</span></div><p>AIOS feeds of metric cards and charts render both in Claude and in Alation's Data Products App.</p></div>
+    <div class="ad card lift"><div class="who"><h4>Gemini Notebook</h4><span class="plat">Google</span></div><p>Option and review cards ask what kind of slide deck you want before generating it.</p></div>
+    <div class="ad card lift"><div class="who"><h4>Gemini Enterprise</h4><span class="plat">Google</span></div><p>Enterprise agents render custom UI such as forms and approval dashboards inside host apps.</p></div>
+    <div class="ad card lift"><div class="who"><h4>ByteDance Lynx</h4><span class="plat">Renderer</span></div><p>Released an A2UI renderer for its Lynx framework in June 2026, moving from 0.9 to 1.0.</p></div>
+    <div class="ad card lift"><div class="who"><h4>Flutter GenUI</h4><span class="plat">Mobile · web · desktop</span></div><p>Flutter's GenUI SDK uses A2UI under the hood to let agents compose from a widget catalog.</p></div>
+  </div>
+  <div class="verts" aria-label="Partner demos by industry">
+    <span><b>Real estate</b> · Homeward</span><span><b>Investing</b> · Somnio Software</span><span><b>Healthcare</b> · GenUI Clinic</span><span><b>Home</b> · Riviera Home</span><span><b>Wellness</b> · Vital Loop</span><span><b>Also building</b> · Bloomberg, Opal</span>
+  </div>
+  <figcaption class="mono"><code>Adopters</code><span>Sources: Google's A2UI 1.0 post, a2ui.org</span></figcaption>
+</figure>
+<div class="col">
+  <p>The pattern across all of them is the same: <strong>moments of decision</strong>. Assigning, approving, choosing, confirming, reviewing a chart. That's where a wall of text fails people and a well-designed card shines. Atlassian's Jira cards and Alation's feeds are listed in the <a href="https://developers.googleblog.com/a2ui-10-build-delightful-fast-reliable-agentic-experiences/">1.0 announcement</a>; Gemini Enterprise and Opal are described in Google's <a href="https://developers.googleblog.com/en/introducing-a2ui-an-open-project-for-agent-driven-interfaces/">launch post</a>.</p>
+</div>
+</div>
+
+<section class="band" id="designers">
+  <div class="wrap">
+    <div class="col">
+      <h2>What changes for designers</h2>
+      <p>When an agent assembles the screen, nobody draws the final layout. The job moves up a level: you design the parts, the rules and the moments, and let the agent compose within them.</p>
+    </div>
+    <div class="wide"><div class="lessons">
+      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><path d="M17.5 14v7M14 17.5h7"/></svg></div><h4>Your catalog is the vocabulary</h4><p>Each component's description goes into the agent's prompt and decides when it gets picked (<a href="https://developers.googleblog.com/build-generative-ui-apps-with-a2ui-copilotkit-agents/">CopilotKit</a>). Writing those descriptions is now design work.</p></div>
+      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H5v16h3M16 4h3v16h-3"/><path d="M9 12h6"/></svg></div><h4>Design contracts, not screens</h4><p>Define props, bindings and validation for every component. The Basic Catalog's 18 primitives are deliberately sparse, so real products need their own.</p></div>
+      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="4" rx="2"/><rect x="3" y="11" width="12" height="4" rx="2" opacity=".5"/><rect x="3" y="17" width="7" height="2" rx="1" opacity=".3"/></svg></div><h4>Design every partial state</h4><p>UI streams in as the agent works. Skeletons, loading order and what appears first are no longer edge cases; they're the main experience.</p></div>
+      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M8.5 12.5l2.3 2.3 4.7-5"/></svg></div><h4>Design the commit moment</h4><p>Inputs stay local until an action fires. Make that moment obvious: a clear primary button, what will be sent, and what happens next.</p></div>
+      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="5" r="2"/><path d="M5 9h14M12 9v5l-3 6M12 14l3 6"/></svg></div><h4>Accessibility travels in the payload</h4><p>Agents can send labels and descriptions with each component. Give them good defaults, and audit what generated surfaces actually announce.</p></div>
+      <div class="lesson card lift"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2881e7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg></div><h4>Design the failure path</h4><p>Invalid output gets sent back for correction; when retries run out, the surface shows a short message (<a href="https://developers.googleblog.com/build-generative-ui-apps-with-a2ui-copilotkit-agents/">CopilotKit</a>). That message deserves the same care as any empty state.</p></div>
+    </div></div>
+  </div>
+</section>
+
+<div class="wrap">
+<div class="col" id="caveats">
+  <h2>The honest caveats</h2>
+  <p>A2UI is promising, but it's early. A few things to weigh before betting a product on it.</p>
+  <ul class="cav">
+    <li><span>Platform support is uneven. Jetpack Compose is still on 0.9.1 with 1.0 "coming soon", and Gemini itself renders 0.9.1 today (<a href="https://developers.googleblog.com/a2ui-10-build-delightful-fast-reliable-agentic-experiences/">Google</a>). The spec page itself now lists 1.0 as current, so the gap is in the renderers, not the protocol.</span></li>
+    <li><span>Standards are multiplying: A2UI, MCP Apps, AG-UI, Open-JSON-UI and OpenAI's ChatKit all cover parts of the same ground (<a href="https://a2ui.org/introduction/agent-ui-ecosystem/">a2ui.org</a>). Expect consolidation, and keep your components protocol-agnostic.</span></li>
+    <li><span>A protocol doesn't make a good interface. Google's announcement makes no benchmark claims for speed, and an agent can still compose a confusing card from perfectly good parts.</span></li>
+    <li><span>Not every screen should be generated. Core workflows that people repeat daily usually deserve hand-crafted, stable layouts; generated UI fits the long tail of one-off decisions.</span></li>
+  </ul>
+  <h2>The road ahead</h2>
+  <p>Google's roadmap points at design-system primitives that render natively on every platform and official support for small "decision models" that pick components instead of writing text (<a href="https://developers.googleblog.com/en/a2ui-1-0-generative-ui">Google</a>). Both push in the same direction: the quality of agent-made UI will depend less on the model and more on the system it's allowed to draw with.</p>
+  <p>For studios like ours, that's good news. The craft doesn't disappear when agents compose screens. It concentrates in the design system, the component contracts and the moments where a person decides. Teams that treat their design system as a product, with clear names, honest descriptions and well-designed states, will get better AI experiences for free.</p>
+
+  <h2 id="sources" style="font-size:22px;margin-top:64px">Sources</h2>
+  <ul class="sources">
+    <li><a href="https://developers.googleblog.com/a2ui-10-build-delightful-fast-reliable-agentic-experiences/">A2UI 1.0: Build delightful, fast, reliable, agentic experiences</a> · Google Developers Blog, Nov 11, 2026</li>
+    <li><a href="https://developers.googleblog.com/en/introducing-a2ui-an-open-project-for-agent-driven-interfaces/">Introducing A2UI: An open project for agent-driven interfaces</a> · Google Developers Blog, Dec 15, 2025</li>
+    <li><a href="https://a2ui.org/specification/v1.0-a2ui/">A2UI Protocol v1.0 specification</a> · a2ui.org</li>
+    <li><a href="https://developers.googleblog.com/build-generative-ui-apps-with-a2ui-copilotkit-agents/">Build Generative UI Apps with A2UI &amp; CopilotKit Agents</a> · Google Developers Blog, Oct 29, 2026</li>
+    <li><a href="https://developers.googleblog.com/en/a2ui-and-mcp-apps/">A2UI + MCP Apps</a> · Google Developers Blog, Jun 17, 2026</li>
+    <li><a href="https://a2ui.org/introduction/agent-ui-ecosystem/">How does A2UI compare?</a> · a2ui.org</li>
+    <li><a href="https://github.com/CopilotKit/generative-ui">Generative UI patterns</a> · CopilotKit on GitHub</li>
+    <li><a href="https://cloud.google.com/discover/generative-ui">What is Generative UI?</a> · Google Cloud</li>
+    <li><a href="https://flutter.dev/blog/new-updates-to-a2ui-and-flutters-genui-package">New updates to A2UI and Flutter's GenUI package</a> · Flutter blog</li>
+    <li><a href="https://sdtimes.com/user-interface/google-releases-a2ui-1-0-for-generative-ui/">Google releases A2UI 1.0 for generative UI</a> · SD Times</li>
+  </ul>
+  <p class="note">All diagrams and demos are Happening's own illustrations. The restaurant, Ledger and Pip are fictional.</p>
+</div>
+</div>
+</article>
+
+<section class="cta" id="connect">
+  <h2>Getting your design system ready for agents?</h2>
+  <a class="btn dark" href="#connect">Connect with us</a>
+</section>
+<footer>
+  <div class="fgrid">
+    <div><a class="logo" href="#top" aria-label="happening — home"><svg viewBox="0 0 1882.14 301.981" fill="currentColor"><use href="#wordmark"/></svg></a><p style="margin-top:14px">AI-native design and technology studio.</p></div>
+    <div><h5>Studios</h5><p>New York · Boston · New Jersey · San Francisco</p><p>Hyderabad · Bengaluru · Mumbai</p></div>
+    <div><h5>Journal</h5><p>More teardowns on design, AI and the products in between.</p><p>© 2026 happening</p></div>
+  </div>
+</footer>
+
+<script type="application/json" id="a2ui-payload">{"agent": [{"version": "1.0", "createSurface": {"surfaceId": "booking", "catalogId": "https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json"}}, {"version": "1.0", "updateComponents": {"surfaceId": "booking", "components": [{"id": "root", "component": "Card", "child": "body"}, {"id": "body", "component": "Column", "children": ["title", "summary", "time_picker", "full_note", "book_button"], "align": "stretch"}, {"id": "title", "component": "Text", "text": {"@call": "formatString", "args": {"value": "## ${/place/name}"}}}, {"id": "summary", "component": "Text", "text": {"@path": "/booking/summary"}, "variant": "caption"}, {"id": "time_picker", "component": "ChoicePicker", "label": "Time", "variant": "mutuallyExclusive", "displayStyle": "chips", "options": [{"label": "19:30", "value": "19:30"}, {"label": "20:15", "value": "20:15"}, {"label": "21:00", "value": "21:00"}], "value": {"@path": "/booking/time"}, "@accessibility": {"label": "Choose a time for your table"}}, {"id": "full_note", "component": "Text", "text": "19:00 is fully booked.", "variant": "caption"}, {"id": "book_label", "component": "Text", "text": "Book table"}, {"id": "book_button", "component": "Button", "child": "book_label", "variant": "primary", "action": {"event": {"name": "bookTable", "userMessage": "Booked a table", "context": {"restaurant": {"@path": "/place/name"}, "time": {"@path": "/booking/time"}}}}}]}}, {"version": "1.0", "updateDataModel": {"surfaceId": "booking", "value": {"place": {"name": "Osteria Nove"}, "booking": {"summary": "Table for 2 · Fri, Nov 28", "time": ["19:30"]}}}}], "action": {"version": "1.0", "action": {"name": "bookTable", "surfaceId": "booking", "sourceComponentId": "book_button", "timestamp": "2026-11-25T12:00:00Z", "userMessage": "Booked a table", "context": {"restaurant": "Osteria Nove", "time": ["19:30"]}}}, "confirm": {"version": "1.0", "updateComponents": {"surfaceId": "booking", "components": [{"id": "body", "component": "Column", "children": ["title", "summary", "confirmed"], "align": "stretch"}, {"id": "confirmed", "component": "Text", "text": {"@call": "formatString", "args": {"value": "Booked for ${/booking/time/0}. Confirmation sent."}}}]}}, "seating": [{"version": "1.0", "createSurface": {"surfaceId": "booking_seating", "catalogId": "https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json"}}, {"version": "1.0", "updateComponents": {"surfaceId": "booking_seating", "components": [{"id": "root", "component": "Card", "child": "body"}, {"id": "body", "component": "Column", "children": ["title", "summary", "time_picker", "seating_picker", "book_button"], "align": "stretch"}, {"id": "title", "component": "Text", "text": {"@call": "formatString", "args": {"value": "## ${/place/name}"}}}, {"id": "summary", "component": "Text", "text": {"@path": "/booking/summary"}, "variant": "caption"}, {"id": "time_picker", "component": "ChoicePicker", "label": "Time", "variant": "mutuallyExclusive", "displayStyle": "chips", "options": [{"label": "19:30", "value": "19:30"}, {"label": "20:15", "value": "20:15"}, {"label": "21:00", "value": "21:00"}], "value": {"@path": "/booking/time"}, "@accessibility": {"label": "Choose a time for your table"}}, {"id": "seating_picker", "component": "ChoicePicker", "label": "Seating", "variant": "mutuallyExclusive", "displayStyle": "chips", "options": [{"label": "Indoors", "value": "indoors"}, {"label": "Terrace", "value": "terrace"}], "value": {"@path": "/booking/seating"}}, {"id": "book_label", "component": "Text", "text": "Book table"}, {"id": "book_button", "component": "Button", "child": "book_label", "variant": "primary", "action": {"event": {"name": "bookTable", "userMessage": "Booked a table", "context": {"restaurant": {"@path": "/place/name"}, "time": {"@path": "/booking/time"}, "seating": {"@path": "/booking/seating"}}}}}]}}, {"version": "1.0", "updateDataModel": {"surfaceId": "booking_seating", "value": {"place": {"name": "Osteria Nove"}, "booking": {"summary": "Table for 2 · Fri, Nov 28", "time": ["19:30"], "seating": ["indoors"]}}}}]}</script>
+<script>
+{
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* segmented thumbs */
+function placeThumb(seg){const b=seg.querySelector('button[aria-pressed="true"]'),t=seg.querySelector('.thumb');if(!b||!t)return;t.style.width=b.offsetWidth+'px';t.style.transform='translateX('+b.offsetLeft+'px)'}
+const segs=[...document.querySelectorAll('.seg')];
+function placeAll(){segs.forEach(placeThumb)}
+const ro=new ResizeObserver(placeAll);segs.forEach(s=>ro.observe(s));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(placeAll);
+function wireSeg(seg,attr,fn){const bs=[...seg.querySelectorAll('button')];bs.forEach((b,i)=>{b.addEventListener('click',()=>{bs.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));placeThumb(seg);fn(b.dataset[attr])});b.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const n=bs[(i+(e.key==='ArrowRight'?1:bs.length-1))%bs.length];n.focus();n.click()}})})}
+
+/* ---- a minimal A2UI v1.0 renderer (Basic Catalog subset), styled by the host ---- */
+const P=JSON.parse(document.getElementById('a2ui-payload').textContent);
+const clone=o=>JSON.parse(JSON.stringify(o));
+function ptr(p){return p.split('/').slice(1).map(x=>x.replace(/~1/g,'/').replace(/~0/g,'~'))}
+class Surface{
+  constructor(mount,opts={}){this.mount=mount;this.opts=opts;this.reset()}
+  reset(){this.created=false;this.id=null;this.comps=new Map();this.data={};this.render()}
+  get(p){let o=this.data;for(const k of ptr(p)){if(o==null)return undefined;o=o[k]}return o}
+  set(p,v){const ks=ptr(p);if(!ks.length){this.data=v??{};return}let o=this.data;ks.slice(0,-1).forEach(k=>{if(o[k]==null||typeof o[k]!=='object')o[k]={};o=o[k]});const last=ks[ks.length-1];if(v===null)delete o[last];else o[last]=v}
+  apply(m){
+    if(m.createSurface){this.created=true;this.id=m.createSurface.surfaceId;(m.createSurface.components||[]).forEach(c=>this.comps.set(c.id,c));if(m.createSurface.dataModel)this.data=clone(m.createSurface.dataModel)}
+    else if(m.updateComponents){m.updateComponents.components.forEach(c=>this.comps.set(c.id,c))}
+    else if(m.updateDataModel){const u=m.updateDataModel;this.set(u.path||'',clone(u.value))}
+    else if(m.deleteSurface){this.reset();return}
+    this.render()}
+  resolve(v){
+    if(v==null||typeof v!=='object')return v;
+    if('@path' in v)return this.get(v['@path']);
+    if(v['@call']==='formatString'){let miss=false;const out=String(v.args.value).replace(/\$\{([^}]+)\}/g,(_,p)=>{const r=this.get(p.trim());if(r==null){miss=true;return''}return r});return miss?undefined:out}
+    return undefined}
+  sk(w,h,r){const e=document.createElement('span');e.className='sk';e.style.cssText=`width:${w}px;height:${h}px;${r?'border-radius:999px;':''}margin:3px 0`;return e}
+  node(id){
+    const c=this.comps.get(id);if(!c)return this.sk(160,14);
+    const el=t=>document.createElement(t);
+    let e;
+    switch(c.component){
+      case 'Card':{e=el('div');e.className='bk on data';e.appendChild(this.node(c.child));break}
+      case 'Column':{e=el('div');e.className='a2col';(c.children||[]).forEach(k=>e.appendChild(this.node(k)));break}
+      case 'Row':{e=el('div');e.className='row';(c.children||[]).forEach(k=>e.appendChild(this.node(k)));break}
+      case 'Text':{const v=this.resolve(c.text);
+        if(v===undefined){e=this.sk(c.variant==='caption'?130:170,c.variant==='caption'?12:20);break}
+        const s=String(v);
+        if(/^#{1,3} /.test(s)){e=el('h5');e.textContent=s.replace(/^#{1,3} /,'')}
+        else{e=el('div');e.className=c.variant==='caption'?'sub':'a2text';e.textContent=s}break}
+      case 'ChoicePicker':{e=el('div');e.className='a2pick';e.setAttribute('role','group');const a=c['@accessibility'];if(a&&a.label)e.setAttribute('aria-label',this.resolve(a.label)||'');
+        if(c.label){const l=el('div');l.className='lbl';l.textContent=this.resolve(c.label)??'';e.appendChild(l)}
+        const row=el('div');row.className='row';const sel=this.resolve(c.value)||[];
+        (c.options||[]).forEach(o=>{const b=el('button');b.className='chip'+(sel.includes(o.value)?' sel':'');b.textContent=this.resolve(o.label)??o.value;b.setAttribute('aria-pressed',String(sel.includes(o.value)));
+          b.addEventListener('click',()=>{if(!c.value||!c.value['@path'])return;const cur=this.resolve(c.value)||[];const next=c.variant==='multipleSelection'?(cur.includes(o.value)?cur.filter(x=>x!==o.value):[...cur,o.value]):[o.value];this.set(c.value['@path'],next);this.render();this.opts.onLocal&&this.opts.onLocal(c.value['@path'],next)});row.appendChild(b)});
+        e.appendChild(row);break}
+      case 'Button':{e=el('button');e.className='btn '+(c.variant==='primary'?'dark ':'')+'go';e.dataset.cid=c.id;const ch=this.node(c.child);e.textContent=ch.textContent||'Button';
+        e.addEventListener('click',()=>this.fire(c));break}
+      default:{e=el('div');e.className='a2text';e.textContent='['+c.component+']'}}
+    return e}
+  fire(c){const ev=c.action&&c.action.event;if(!ev)return;const ctx={};Object.entries(ev.context||{}).forEach(([k,v])=>ctx[k]=this.resolve(v));
+    const msg={version:'1.0',action:{name:ev.name,surfaceId:this.id,sourceComponentId:c.id,timestamp:new Date().toISOString().replace(/\.\d+Z$/,'Z')}};
+    if(ev.userMessage)msg.action.userMessage=ev.userMessage;msg.action.context=ctx;this.opts.onAction&&this.opts.onAction(msg)}
+  click(id){const c=this.comps.get(id);if(c)this.fire(c)}
+  render(){this.mount.innerHTML='';if(!this.created||!this.comps.has('root'))return;this.mount.appendChild(this.node('root'))}
+}
+
+/* JSON pretty-print + highlight */
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function compact(m){if(m.updateComponents){const u=m.updateComponents;return '{"version":"1.0","updateComponents":{"surfaceId":'+JSON.stringify(u.surfaceId)+',"components":[\n'+u.components.map(c=>'  '+JSON.stringify(c)).join(',\n')+'\n]}}'}return JSON.stringify(m)}
+function hl(txt,pad=true){return txt.replace(/("(?:\\.|[^"\\])*")(\s*:)?|(-?\b\d+(?:\.\d+)?\b)|([{}\[\],:])/g,(m,str,colon,num,p)=>{if(str)return colon?'<span class="jk">'+esc(str)+'</span><span class="jp">'+(pad?': ':':')+'</span>':'<span class="js">'+esc(str)+'</span>';if(num)return '<span class="jn">'+num+'</span>';return '<span class="jp">'+p+(pad&&p===','?' ':'')+'</span>'})}
+
+/* hero: the stream drives the renderer */
+const msgList=document.getElementById('msgs'),surf=document.getElementById('surf'),tag=document.getElementById('surfTag'),toast=document.getElementById('toast');
+const steps=[{dir:'↓ agent',m:P.agent[0],tag:'surface "booking" created'},{dir:'↓ agent',m:P.agent[1],tag:'components arrived · data pending'},{dir:'↓ agent',m:P.agent[2],tag:'data model set · ready'},{dir:'↑ app · user tapped Book',m:P.action,tag:'action sent to the agent',up:true},{dir:'↓ agent',m:P.confirm,tag:'agent updated the surface'}];
+steps.forEach((st,i)=>{const li=document.createElement('li');li.dataset.s=i;if(st.up)li.classList.add('up');li.innerHTML='<span class="dir">'+st.dir+'</span>'+hl(compact(st.m));msgList.appendChild(li);st.li=li});
+let hs=-1,hPlaying=!reduce,timer=null,toastT=null;
+function showToast(t){toast.textContent=t;toast.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>toast.classList.remove('on'),2200)}
+const hero=new Surface(document.getElementById('heroMount'),{
+  onLocal:(p,v)=>showToast('local data '+p+' = '+JSON.stringify(v)+' · nothing sent yet'),
+  onAction:msg=>{steps[3].m=msg;steps[3].li.innerHTML='<span class="dir">'+steps[3].dir+'</span>'+hl(compact(msg));mark(3);clearTimeout(timer);timer=setTimeout(()=>{hero.apply(P.confirm);mark(4);schedule()},1100)}});
+function mark(s){hs=s;steps.forEach((st,i)=>{st.li.classList.toggle('now',i===s);st.li.classList.toggle('seen',i<s)});surf.classList.toggle('live',s>=0);tag.textContent=s<0?'waiting for agent…':steps[s].tag;
+  const li=steps[s]&&steps[s].li;if(li){msgList.scrollTo({top:li.offsetTop-msgList.offsetTop-8,behavior:reduce?'auto':'smooth'})}}
+function heroStep(s){
+  if(s<0||s===0){hero.reset();steps[3].m=P.action;steps[3].li.innerHTML='<span class="dir">'+steps[3].dir+'</span>'+hl(compact(P.action))}
+  if(s<0){mark(-1);msgList.scrollTo({top:0});return}
+  if(s<=2){hero.apply(steps[s].m);mark(s)}
+  else if(s===3){hero.click('book_button');return}
+  else if(s===4){hero.apply(P.confirm);mark(4)}}
+function heroTick(){heroStep(hs>=4?-1:hs+1);if(hs!==3)schedule()}
+function schedule(){clearTimeout(timer);if(hPlaying)timer=setTimeout(heroTick,hs===4?3200:hs===-1?900:1800)}
+const hPlay=document.getElementById('hPlay');
+function syncH(){hPlay.textContent=hPlaying?'Pause':'Play'}
+hPlay.addEventListener('click',()=>{hPlaying=!hPlaying;syncH();schedule()});
+document.getElementById('hStep').addEventListener('click',()=>{hPlaying=false;syncH();clearTimeout(timer);heroStep(hs>=4?-1:hs+1)});
+document.getElementById('heroMount').addEventListener('click',()=>{if(hPlaying){hPlaying=false;syncH()}},true);
+syncH();heroStep(-1);schedule();
+
+/* text vs ui */
+const chatSide=document.getElementById('chatSide'),cardSide=document.getElementById('cardSide'),bubs=[...document.querySelectorAll('#chat .bub')];
+let bt=[];
+function playChat(){bt.forEach(clearTimeout);bubs.forEach(b=>b.classList.remove('on'));bubs.forEach((b,i)=>bt.push(setTimeout(()=>b.classList.add('on'),reduce?0:250+i*520)))}
+function setVs(v){chatSide.classList.toggle('dim',v==='ui');cardSide.classList.toggle('dim',v==='text');if(v==='text')playChat()}
+wireSeg(document.getElementById('vsSeg'),'v',setVs);
+const vs=new Surface(document.getElementById('vsMount'),{onAction:()=>{const c=clone(P.confirm);c.updateComponents.surfaceId=vs.id;vs.apply(c)}});
+P.seating.forEach(m=>vs.apply(m));
+const chatObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){playChat();chatObs.disconnect()}})},{threshold:.4});chatObs.observe(chatSide);
+setVs('text');
+
+/* architecture panel */
+const info={
+ agent:['AG','Agent side','Agent','An LLM writes A2UI, or a small "system one" decision model picks components instead of writing text. Agent SDKs exist for TypeScript, Python and Dart, and help generate, translate and correct messages.'],
+ msgs:['MSG','The payload','A2UI messages','Declarative JSON, never executable code. A flat list of components referenced by id, so the app can render progressively and the agent can update one piece without resending the rest.'],
+ data:['DATA','Kept away from the model','Your data','Google says A2UI binds data and child components on the server, so sensitive values never reach the model. The agent arranges the card; your backend fills in what\u2019s private.'],
+ transport:['NET','Any pipe','Transport','A2UI is transport-agnostic. It travels over A2A between agents, over AG-UI into full-stack apps, or inside MCP Apps, which is how A2UI screens appear in Claude and Gemini.'],
+ catalog:['CAT','The design system boundary','Renderer + catalog','Your app keeps a catalog of approved components and functions. The agent can only use what\u2019s registered; anything else is rejected before it reaches the screen. Official renderers cover React, Angular, Lit, Flutter and SwiftUI, with Compose coming.'],
+ native:['UI','Your pixels','Native UI','Each app draws the message with its own components and theme, so a card in a bank app looks like the bank and a card in Jira looks like Jira. Taps and input go back to the agent as actions or function calls.']};
+const nodes=[...document.querySelectorAll('.node')];
+const pi=document.getElementById('pi'),pk=document.getElementById('pk'),pt=document.getElementById('pt'),pd=document.getElementById('pd'),pb=document.getElementById('pbody');
+function pick(k){const v=info[k];if(!v)return;pi.textContent=v[0];pk.textContent=v[1];pt.textContent=v[2];pd.textContent=v[3];nodes.forEach(n=>n.classList.toggle('sel',n.dataset.k===k));pb.classList.remove('swap');void pb.offsetWidth;pb.classList.add('swap')}
+nodes.forEach(n=>{n.addEventListener('click',()=>pick(n.dataset.k));n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(n.dataset.k)}})});
+pick('catalog');
+
+/* full payload code block + copy */
+const all=[...P.agent,P.action,P.confirm];
+const labels=['// 1 · agent → app','// 2 · agent → app','// 3 · agent → app','// 4 · app → agent (user tapped Book)','// 5 · agent → app'];
+document.getElementById('codeBlock').innerHTML=all.map((m,i)=>'<span class="jp">'+labels[i]+'</span>\n'+hl(JSON.stringify(m,null,2),false)).join('\n\n');
+const cb=document.getElementById('copyBtn');
+cb.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(all.map(m=>JSON.stringify(m)).join('\n'));cb.textContent='Copied'}catch(e){cb.textContent='Select and copy'}setTimeout(()=>cb.textContent='Copy JSONL',1800)});
+
+/* brands: same messages, different host styling */
+const stage=document.getElementById('stage'),bnote=document.getElementById('bnote');
+const bs=new Surface(document.getElementById('brandMount'),{onAction:()=>{bs.apply(P.confirm);setTimeout(()=>{bs.reset();P.agent.forEach(m=>bs.apply(m))},2600)}});
+P.agent.forEach(m=>bs.apply(m));
+(function tree(){const comps=new Map(P.agent[1].updateComponents.components.map(c=>[c.id,c]));const out=[];
+  const hint=c=>{const b=v=>v&&typeof v==='object'?('@path' in v?'@'+v['@path']:v['@call']?v['@call']+'('+JSON.stringify(v.args.value)+')':''):(v!=null?JSON.stringify(v):'');
+    if(c.component==='Text')return b(c.text)+(c.variant?' ·'+c.variant:'');if(c.component==='ChoicePicker')return b(c.value)+' · '+c.options.map(o=>o.value).join(' ');if(c.component==='Button')return 'action: '+c.action.event.name;return ''};
+  const walk=(id,pre,last,root)=>{const c=comps.get(id);out.push(pre+(root?'':(last?'└─ ':'├─ '))+c.component.padEnd(13)+hint(c));const kids=c.children||(c.child?[c.child]:[]);kids.forEach((k,i)=>walk(k,pre+(root?'':(last?'   ':'│  ')),i===kids.length-1,false))};
+  walk('root','',true,true);document.getElementById('brandTree').textContent=out.join('\n')})();
+const bn={hap:'<b>Happening.</b> Cream canvas, pill chips, Instrument Sans, one blue moment. The agent never mentioned any of it.',
+ led:'<b>Ledger, a fictional bank.</b> Sharp corners, a serif display face and navy. Same components, same order, same data.',
+ pip:'<b>Pip, a fictional consumer app.</b> Soft 32px corners, a rounded face and loud colour. Still the same components, in the same order.'};
+function setBrand(t){stage.className='stage t-'+t;bnote.innerHTML=bn[t]}
+wireSeg(document.getElementById('brandSeg'),'t',setBrand);setBrand('hap');
+
+/* toc highlight */
+const tl=[...document.querySelectorAll('.toc a')];
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){tl.forEach(a=>{const on=a.getAttribute('href')==='#'+e.target.id;a.classList.toggle('on',on);if(on&&a.parentElement.scrollWidth>a.parentElement.clientWidth)a.parentElement.scrollTo({left:a.offsetLeft-40,behavior:reduce?'auto':'smooth'})})}})},{rootMargin:'-30% 0px -60% 0px'});
+tl.forEach(a=>{const s=document.querySelector(a.getAttribute('href'));if(s)io.observe(s)});
+placeAll();
+}
+</script>
+</body>
+</html>
